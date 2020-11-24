@@ -579,21 +579,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2020-11-15
+                    2020-11-21
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.2k
+                    1.5k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    4 分
+                    5 分
                 </div>
                 
 
@@ -616,20 +616,22 @@
 <li>选定框回归：最后对每个类别用NMS(non-maximum-suppression 非最大抑制,一种选取检测框的算法)来舍弃掉一部分region，得到detection的结果(对得到的结果做针对boundingbox回归(边框回归)，用来修正预测的boundingbox的位置)</li>
 </ul>
 <h2 id="算法模块"><a href="#算法模块" class="headerlink" title="算法模块"></a>算法模块</h2><h4 id="1、Region-Proposals区域选择"><a href="#1、Region-Proposals区域选择" class="headerlink" title="1、Region Proposals区域选择"></a>1、Region Proposals区域选择</h4><p>在目标检测时，为了定位到目标的具体位置，通常会把图像分成许多子块，然后把子块作为输入，送到目标识别的模型中。分子块的最直接方法叫滑动窗口法（Sliding Window Approach）。滑动窗口的方法就是按照子块的大小在整幅图像上穷举所有子图像块。<br> 而论文中使用的Selective Search方法是则是基于区域推荐的，目的是为了改善传统提取特征方法中机从左到右、从上到下穷举式带来的低效。R-CNN不关心特定的区域推荐算法，选择Selective Search只是为了与需要对比的前任论文保持一致。R-CNN一张图片选出约2000个候选区域</p>
-<h4 id="2、CNN提取特征"><a href="#2、CNN提取特征" class="headerlink" title="2、CNN提取特征"></a>2、CNN提取特征</h4><p><img src="/images/CNN.jpg" alt="CNN网络结构(AlexNet)"></p>
+<h4 id="2、CNN提取特征-AlexNet网络结构"><a href="#2、CNN提取特征-AlexNet网络结构" class="headerlink" title="2、CNN提取特征(AlexNet网络结构)"></a>2、CNN提取特征(AlexNet网络结构)</h4><p><img src="/images/CNN.jpg" alt="CNN网络结构(AlexNet)"></p>
 <p><img src="/images/dim3.png" alt="AlexNet维度变化"></p>
-<p>R-CNN使用的CNN网络是AlexNet，该网络的具体结构见上图。AlexNet原本是为做<strong>图像分类任务</strong>，R-CNN是为做目标检测任务，故替换掉了AlexNet的最后一层的<strong>全连接层</strong>（4096*1000）。故R-CNN的结构<strong>实际是5个卷积层、2个全连接层</strong>。输入是Region Proposal计算的推荐区域的图像，由于该<strong>CNN网络输入限定</strong>为2000*227*227*3（RGB）的输入，故在R-CNN中将Region Proposal的推荐区域<strong>仿射变形</strong>到227*227的格式上，网络输出是2000*4096*1的特征向量。 </p>
+<p>R-CNN使用的CNN网络是AlexNet，该网络的具体结构见上图。AlexNet原本是为做<strong>图像分类任务</strong>，R-CNN是为做目标检测任务，故替换掉了AlexNet的最后一层的<strong>全连接层</strong>（4096*1000）。故R-CNN的结构<strong>实际是5个卷积层、2个全连接层</strong>(上图全链接8层去掉)。输入是Region Proposal计算的推荐区域的图像，由于该<strong>CNN网络输入限定</strong>为2000*227*227*3（RGB）的输入，故在R-CNN中将Region Proposal的推荐区域<strong>仿射变形</strong>到227*227的格式上，网络输出是2000*4096*1的特征向量（提取了2000个特征，每个特征由4096*1向量代表）。 </p>
 <h4 id="3、SVM判别类别"><a href="#3、SVM判别类别" class="headerlink" title="3、SVM判别类别"></a>3、SVM判别类别</h4><p>使用训练过的对应类别的SVM给特征向量中的每个类进行打分，每个类别对应一个<strong>二分类SVM</strong>，CNN输出2000*4096，SVM输出2000*N（N是数据集中目标的类别），然后为了减少重复的bounding box(边框)，使用了<strong>非极大值抑制法</strong>：如果一个区域的得分与大于它得分的区域有很大程度的交叉（intersection-overunion（IoU））根据score进行排序，把score最大的bounding box作为选定的框，计算其余bounding box与当前最大score与box的IoU，去除IoU大于设定的阈值的bounding box。然后重复上面的过程，直至候选bounding box为空，然后再将score小于一定阈值的选定框删除得到一类的结果。</p>
 <h4 id="4、选定框回归"><a href="#4、选定框回归" class="headerlink" title="4、选定框回归"></a>4、选定框回归</h4><p><img src="/images/Region_picture.png" alt="Region proposal"></p>
 <p>如上图所示，通过selective search得到的region proposal可能与ground truth相差较大，尽管这个region proposal可能有很高的分类评分，但对于检测来说，它依然是不合格的。<br> 为了进一步提高定位的准确度，作者在对各个region proposal打分后，利用回归的方法重新预测了一个新的矩形框，借此来进一步修正bounding box的大小和位置。</p>
 <h2 id="训练过程"><a href="#训练过程" class="headerlink" title="训练过程"></a>训练过程</h2><p>由于在实际检测中，带标签的训练数据肯定是<strong>缺少</strong>的。作者给出<strong>pre-training</strong>和<strong>fine-tuning</strong>结合的方法：</p>
-<p><strong>1、先预训练AlexNet使用imagenet数据集，按分类任务pre-training（使用辅助数据集进行有监督的预训练）。</strong></p>
+<p><strong>1、使用imagenet数据集预训练AlexNet，所谓pre-training（使用辅助数据集进行有监督的预训练）。</strong></p>
 <p><strong>2、fine-tune，将模型的最后一层修改类别数。使用pascal voc 数据集fine-tune。</strong></p>
 <p>输入为warped region proposal(扭曲区域，即进行仿射变换后的图像)，输出为21维类向量。（与pre-training网络的唯一改变是由输出1000类改为输出21类）。包括20类目标和背景。把与ground truth的IOU&gt;0.5的region proposal作为正例，其余为负例，即背景。每个batch里包含32个正例，96个负例共128个。学习率为0.001，是pre-training的1/10，为了不破坏与训练的结果。</p>
 <p><strong>3、训练SVM</strong></p>
 <p>训练某类别的SVM，与该类目标的groud-truth的IoU&gt;0.3的region proposal的特征向量作为正例，其余作为负例。为了减小内存使用，采用standard hard negative mining method。</p>
 <p><strong>4、训练bounding box regression</strong></p>
 <p>受DPM （Object detection with discriminatively trained part based models）的灵感，训练一个线性回归模型，给定pool5层的特征预测一个新的检测窗口。</p>
+<p><strong>5、正负样本和softmax的问题：</strong></p>
+<p>为什么最后分类的时候用SVM代替了softmax，因为作者通过实验发现还是SVM更好。那为什么不一开始就用SVM做fine-tuning呢？我认为是SVM是一个二分类器，并不适合做fine-tuning。当用softmax做fine-tuning时，如果采用和SVM一样的区分正负样本策略，则效果会差很多。作者猜测是因为这样做会引起样本数太少导致过拟合。softmax区分样本的方法更宽泛，将正样本的数量提高近30倍，这样就避免了过拟合。值得注意的是，这样做得到的结果是次优的，因为并没有用精确的定位以及更严格的负样本来fine-tuning。svm训练的时候，因为svm适用于少样本训练，所以对于训练样本数据的IOU要求比较严格。</p>
 
             </div>
             <hr/>
@@ -887,13 +889,7 @@
                     <div class="summary block-with-text">
                         
                             学习结构概述
-目标探测介绍通俗理解模型知道某个物品在图像在哪的算法就是目标检测。
-任务根据分类对象个数的不同分为单目标和多目标任务
-
-直接思路转化为分类，回归问题
-使用不同的候选区域框，取不同的区域，逐个判断是否为需要检测的目标对象
-
-传统
+CNN原理1.数据输入层（数据预处理）有三种常见的数据预处理方法，去均值（demean），归一化，PCA/白化，对于CNN来说，一般只会做去均值+归一化，尤其是我们输入的是图像数据，我们往往只做去均值，这是为了保持原图像数据的
                         
                     </div>
                     <div class="publish-info">
@@ -1231,7 +1227,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">31.9k</span>&nbsp;字
+                class="white-color">39.2k</span>&nbsp;字
             
             
             

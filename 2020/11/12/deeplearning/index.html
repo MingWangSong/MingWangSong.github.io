@@ -583,21 +583,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2020-11-13
+                    2020-11-19
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    699
+                    1.6k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    2 分
+                    5 分
                 </div>
                 
 
@@ -613,19 +613,55 @@
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <p> 学习神经网络，深度学习的一些笔记</p>
-<h2 id="神经网络"><a href="#神经网络" class="headerlink" title="神经网络"></a>神经网络</h2><h3 id="两个问题"><a href="#两个问题" class="headerlink" title="两个问题"></a>两个问题</h3><h4 id="1-为什么需要使用激活函数"><a href="#1-为什么需要使用激活函数" class="headerlink" title="1 为什么需要使用激活函数"></a>1 为什么需要使用激活函数</h4><p>如果网络中的神经元没有激活函数，如下图所示，可以看出该网络是x1和x2的线性组合</p>
+<h2 id="神经网络"><a href="#神经网络" class="headerlink" title="神经网络"></a>神经网络</h2><h3 id="1、两个问题"><a href="#1、两个问题" class="headerlink" title="1、两个问题"></a>1、两个问题</h3><h4 id="1-1-为什么需要使用激活函数"><a href="#1-1-为什么需要使用激活函数" class="headerlink" title="1.1 为什么需要使用激活函数"></a>1.1 为什么需要使用激活函数</h4><p>如果网络中的神经元没有激活函数，如下图所示，可以看出该网络是x1和x2的线性组合</p>
 <p><img src="/images/picture1.png" alt="无激活函数网络"></p>
 <p>因此，最终训练出来的永远都是一条直线，而不能很好的达到分类效果</p>
-<h4 id="2-随机初始化"><a href="#2-随机初始化" class="headerlink" title="2 随机初始化"></a>2 随机初始化</h4><h5 id="2-1将参数全部初始化为0，在神经网络中不适用"><a href="#2-1将参数全部初始化为0，在神经网络中不适用" class="headerlink" title="2.1将参数全部初始化为0，在神经网络中不适用"></a>2.1将参数全部初始化为0，在神经网络中不适用</h5><p>尽管在逻辑回归中，可以这样操作，但是实际神经网络训练中起不到作用。</p>
+<h4 id="1-2-随机初始化"><a href="#1-2-随机初始化" class="headerlink" title="1.2 随机初始化"></a>1.2 随机初始化</h4><p><strong>将参数全部初始化为0，在神经网络中不适用</strong></p>
+<p>尽管在逻辑回归中，可以这样操作，但是实际神经网络训练中起不到作用。</p>
 <p><img src="/images/picture2.png" alt="无激活函数网络"></p>
 <p>如果我们初始化所有θ全为0（全部相等），那么对于每个隐藏单元的输入基本都是一样的，所以求得的偏导也是一致的。</p>
-<p><strong>这就意味着这个神经网络计算不出很好的函数，当我们有很多的隐藏单元时，所有的隐藏单元都在计算相同的特征，都在以相同的函数作为输入。—高度冗余。所以无论后面有几个输出单元，最终只能得到一个特征，这种情况阻止了神经网络学习有趣的东西</strong></p>
-<h2 id="深度神经网络"><a href="#深度神经网络" class="headerlink" title="深度神经网络"></a>深度神经网络</h2><h3 id="什么是神经深度神经网络"><a href="#什么是神经深度神经网络" class="headerlink" title="什么是神经深度神经网络"></a>什么是神经深度神经网络</h3><p><img src="/images/deep_netwok.jpg" alt="What is a deep neural network?"></p>
+<p><strong>这就意味着这个神经网络计算不出很好的函数，当我们有很多的隐藏单元时，所有的隐藏单元都在计算相同的特征，都在以相同的函数作为输入。—-高度冗余。所以无论后面有几个输出单元，最终只能得到一个特征，这种情况阻止了神经网络学习有趣的东西</strong></p>
+<h3 id="2、激活函数"><a href="#2、激活函数" class="headerlink" title="2、激活函数"></a>2、激活函数</h3><h4 id="2-1-为什么要用激活函数"><a href="#2-1-为什么要用激活函数" class="headerlink" title="2.1 为什么要用激活函数"></a>2.1 为什么要用激活函数</h4><p>神经网络中激活函数的主要作用是提供网络的<strong>非线性建模能力</strong>，如不特别说明，激活函数一般而言是非线性函数。假设一个示例神经网络中仅包含线性卷积和全连接运算，那么该网络仅能够表达线性映射，即便增加网络的深度也依旧还是线性映射，难以有效建模实际环境中非线性分布的数据。<strong>加入（非线性）激活函数之后，深度神经网络才具备了分层的非线性映射学习能力。</strong></p>
+<h4 id="2-2-激活函数性质"><a href="#2-2-激活函数性质" class="headerlink" title="2.2 激活函数性质"></a>2.2 激活函数性质</h4><ul>
+<li><strong>非线性：</strong>如果不用激活函数，每一层输出都是上层输入的线性函数，<strong>无论神经网络有多少层，输出都是输入的线性组合。</strong>如果使用的话，激活函数给神经元引入了非线性因素，使得神经网络可以任意逼近任何非线性函数，这样神经网络就可以应用到众多的非线性模型中。<strong>当激活函数是非线性的时候，一个两层的神经网络就可以逼近基本上所有的函数了。</strong></li>
+<li><strong>可微性：</strong> 当优化方法是基于梯度的时候，这个性质是必须的。</li>
+<li><strong>单调性：</strong> 当激活函数是单调的时候，单层网络能够保证是凸函数。</li>
+<li><strong>$f(x)\approx x$：</strong>当激活函数满足这个性质的时候，如果参数的初始化是random的很小的值，那么神经网络的训练将会很高效；如果不满足这个性质，那么就需要很用心的去设置初始值。但是，如果激活函数是恒等激活函数的时候（即<em>f</em>(<em>x</em>)=<em>x</em>），如果MLP（多层感知机）使用的是恒等激活函数，那么其实整个网络跟单层神经网络是等价的。</li>
+<li><strong>输出值的范围：</strong> 当激活函数输出值是有限的时候，基于梯度的优化方法会更加稳定，因为特征的表示受有限权值的影响更显著；当激活函数的输出是无限的时候，模型的训练会更加高效，不过在这种情况下，一般需要更小的学习率。</li>
+</ul>
+<h4 id="2-3-常见激活函数"><a href="#2-3-常见激活函数" class="headerlink" title="2.3 常见激活函数"></a>2.3 常见激活函数</h4><ul>
+<li><p>逻辑函数Sigmoid</p>
+<p>​    逻辑函数（logistic function）或逻辑曲线（logistic curve）是一种常见的S函数，它是皮埃尔·弗朗索瓦·韦吕勒在1844或1845年在研究它与人口增长的关系时命名的。</p>
+<p>​    一个简单的Logistic函数表达式为:</p>
+<script type="math/tex; mode=display">
+f(x)=\frac{1}{1+e^{-x}}</script><p><img src="/images/DeepLearning/1180694-20190819084349786-867823424.jpg" alt="标准逻辑函数的图像"></p>
+<p>逻辑函数形如S，所以通常也叫做S形函数。</p>
+<p>从函数图像易知f(x)的定义域为[-∞, +∞]， 值域是(0,1)</p>
+<p>对f(x)求导数，易得</p>
+<p><img src="/images/DeepLearning/image-20201119155801659.png" alt=""></p>
+</li>
+<li><p>双曲正切函数tanh</p>
+<pre><code>双曲正切函数是双曲函数的一种。在数学中，双曲函数是一类与常见的三角函数类似的函数。双曲正切函数的定义为
+</code></pre><p><img src="/images/DeepLearning/image-20201119155843774.png" alt=""></p>
+<p><img src="/images/DeepLearning/70" alt="双曲正切函数的图像"></p>
+<p>从函数图像易知f(x)的定义域为[-∞, +∞]， 值域是(-1,1)</p>
+<p>对f(x)求导数，易得</p>
+<p><img src="/images/DeepLearning/image-20201119160045120.png" alt=""></p>
+</li>
+<li><p>线性整流函数ReLU</p>
+<p>​    线性整流函数（Rectified Linear Unit, ReLU）,又称修正线性单元, 是一种人工神经网络中常用的激活函数，通常指代以斜坡函数及其变种为代表的非线性函数。</p>
+<p>​    通常意义下，线性整流函数指代数学中的斜坡函数，即</p>
+<p><img src="/images/DeepLearning/image-20201119160149198.png" alt=""></p>
+<p><img src="/images/DeepLearning/1180694-20190819084423993-1732278271.jpg" alt="ReLU函数图像"></p>
+<p><img src="/images/DeepLearning/image-20201119161206031.png" alt="带泄露的ReLu函数图像"></p>
+</li>
+</ul>
+<h2 id="深度神经网络"><a href="#深度神经网络" class="headerlink" title="深度神经网络"></a>深度神经网络</h2><h3 id="1、什么是神经深度神经网络"><a href="#1、什么是神经深度神经网络" class="headerlink" title="1、什么是神经深度神经网络"></a>1、什么是神经深度神经网络</h3><p><img src="/images/deep_netwok.jpg" alt="What is a deep neural network?"></p>
 <p>上图依次是：</p>
 <p>单层神经网络(传统的机器学习模型，如：logistic回归)；</p>
 <p>双层神经网络模型(隐含层+输出层，注意：不算输入层这一层)，三层神经网络模型；</p>
 <p>深度神经网络模型(层次更深)；</p>
-<h3 id="一些描述深度神经网络的符号"><a href="#一些描述深度神经网络的符号" class="headerlink" title="一些描述深度神经网络的符号"></a>一些描述深度神经网络的符号</h3><p>以下图网络结构为例：</p>
+<h3 id="2、一些描述深度神经网络的符号"><a href="#2、一些描述深度神经网络的符号" class="headerlink" title="2、一些描述深度神经网络的符号"></a>2、一些描述深度神经网络的符号</h3><p>以下图网络结构为例：</p>
 <p><img src="/images/network.jpg" alt="深度神经网络"></p>
 <p>该结构有4层网络结构(layer neural network)，其中，三层是隐含层(hidden layers)</p>
 <p><img src="/images/network2.jpg" alt="深度神经网络"></p>
@@ -639,15 +675,16 @@
 <li>输入数据$x$记为$a^{[0]}$，输出$ \hat{y}$记为$a^{[L]}$。</li>
 <li>换算公式：</li>
 </ul>
-<p>$$<br>a^{[l]} = g^{[l]}(z^{[l]})\<br>z^{[l]} = \omega^{[l]} a^{[l-1]} + b^{[l]}\<br>$$</p>
-<p>向前传播变量计算流程图：</p>
+<script type="math/tex; mode=display">
+a^{[l]} = g^{[l]}(z^{[l]})\\
+z^{[l]} = \omega^{[l]} a^{[l-1]} + b^{[l]}\\</script><p>向前传播变量计算流程图：</p>
 <p><img src="/images/model1.png" alt="向前传播变量计算流程图"></p>
 <p>向后传播变量计算流程图：</p>
 <p><img src="/images/after_net.jpg" alt="向后传播变量计算流程图"></p>
-<h3 id="维度对齐那些事"><a href="#维度对齐那些事" class="headerlink" title="维度对齐那些事"></a>维度对齐那些事</h3><h4 id="输入特征为一维值时"><a href="#输入特征为一维值时" class="headerlink" title="输入特征为一维值时"></a>输入特征为一维值时</h4><p><img src="/images/dim1.jpg" alt="维度对齐过程"></p>
+<h3 id="3、维度对齐那些事"><a href="#3、维度对齐那些事" class="headerlink" title="3、维度对齐那些事"></a>3、维度对齐那些事</h3><h4 id="3-1-输入特征为一维值时"><a href="#3-1-输入特征为一维值时" class="headerlink" title="3.1 输入特征为一维值时"></a>3.1 输入特征为一维值时</h4><p><img src="/images/dim1.jpg" alt="维度对齐过程"></p>
 <p>先通过$z$和$x$来考虑$\omega$的维度，推理可得，$\omega^{[i]}$的维度为$(n^{[i]},n^{[i-1]})$；</p>
 <p>再考虑偏置常量$b$的维度，主要是求和方向维度对齐，$b^{[i]}$维度为$(n^{[i]},1)$。</p>
-<h4 id="输入特征为m维值时"><a href="#输入特征为m维值时" class="headerlink" title="输入特征为m维值时"></a>输入特征为m维值时</h4><p><img src="/images/dim2.jpg" alt="维度对齐过程"></p>
+<h4 id="3-2-输入特征为m维值时"><a href="#3-2-输入特征为m维值时" class="headerlink" title="3.2 输入特征为m维值时"></a>3.2 输入特征为m维值时</h4><p><img src="/images/dim2.jpg" alt="维度对齐过程"></p>
 <p>主要是改变了偏置常量$b$的维度，$b^{[i]}$维度为$(n^{[i]},m)$。</p>
 
             </div>
@@ -1175,6 +1212,13 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
 </main>
 
 
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
+
 
 
     <footer class="page-footer bg-color">
@@ -1243,7 +1287,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">31.9k</span>&nbsp;字
+                class="white-color">39.2k</span>&nbsp;字
             
             
             

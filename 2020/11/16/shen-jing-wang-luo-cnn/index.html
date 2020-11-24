@@ -583,21 +583,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2020-11-16
+                    2020-11-24
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    410
+                    1.2k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    4 分
                 </div>
                 
 
@@ -612,8 +612,32 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="学习结构概述"><a href="#学习结构概述" class="headerlink" title="学习结构概述"></a>学习结构概述</h2><p><img src="/images/image-20201116095100679.png" alt="模型学习结构图"></p>
-<h2 id="目标探测介绍"><a href="#目标探测介绍" class="headerlink" title="目标探测介绍"></a>目标探测介绍</h2><h3 id="通俗理解"><a href="#通俗理解" class="headerlink" title="通俗理解"></a>通俗理解</h3><p>模型知道某个物品在图像在哪的算法就是目标检测。</p>
+                <h1 id="学习结构概述"><a href="#学习结构概述" class="headerlink" title="学习结构概述"></a>学习结构概述</h1><p><img src="/images/image-20201116095100679.png" alt="模型学习结构图"></p>
+<h1 id="CNN原理"><a href="#CNN原理" class="headerlink" title="CNN原理"></a>CNN原理</h1><h2 id="1-数据输入层（数据预处理）"><a href="#1-数据输入层（数据预处理）" class="headerlink" title="1.数据输入层（数据预处理）"></a>1.数据输入层（数据预处理）</h2><p>有三种常见的数据预处理方法，去均值（demean），归一化，PCA/白化，对于CNN来说，一般只会做去均值+归一化，尤其是我们输入的是图像数据，我们往往只做去均值，这是为了保持原图像数据的完整性，避免失真。</p>
+<p><img src="/images/数据预处理" alt="3种常见的数据预处理方式"></p>
+<p><img src="/images/1569451-20190608152240913-1523305295.png" alt="数据去均值&amp;归一化"></p>
+<h2 id="2-卷积介绍"><a href="#2-卷积介绍" class="headerlink" title="2.卷积介绍"></a>2.卷积介绍</h2><p>深度学习上使用的<strong>卷积</strong>与数学意义上的<strong>卷积</strong>，有一点不同。数学上，为了卷积的一些运算特性，在进行卷积运算时，<strong>会先将卷积核沿$y=x$轴进行对称翻转</strong>；但是，在深度学习中，数学上的运算特性作用不大，故省去了镜像翻转的这一步，直接进行点积操作。</p>
+<p><img src="/images/神经网络CNN/image-20201124105539221.png" alt="三维卷积"></p>
+<h2 id="3-单层卷积网络"><a href="#3-单层卷积网络" class="headerlink" title="3.单层卷积网络"></a>3.单层卷积网络</h2><h3 id="模型介绍"><a href="#模型介绍" class="headerlink" title="模型介绍"></a>模型介绍</h3><p><img src="/images/神经网络CNN/image-20201124113414172.png" alt="单层卷积网络实例"></p>
+<p>上图所示，卷积核充当了传统神经网络中权重$\omega$的作用，然后通过python的广播机制对每个卷积预算后的矩阵加上一个偏执常量。（广播机制：python会自动将单个元素与前面的矩阵进行复制扩充对齐）</p>
+<p>当卷积核不断增加时，输出的结果数据规格也在变化(假设为：M*N*K)，其中K就代表这卷积核数，即特征数。（因此，就可以根据分类种类，选取不同的卷积核数，使得输出的结果能够最后和分类种类数对齐。）</p>
+<p>在卷积神经网络模型中，决定模型参数量的，主要是看卷积核数，与输入的数据量大小无关。（例如：单层卷积网络模型中有10个3*3*3的卷积核，则其参数量为：(3*3*3+1)*10 = 280，其中加一是考虑到偏执常量。这就是卷积设计网络的<strong>“避免过拟合”</strong>特征。）</p>
+<h3 id="维度-amp-标号总结"><a href="#维度-amp-标号总结" class="headerlink" title="维度&amp;标号总结"></a>维度&amp;标号总结</h3><p><img src="/images/神经网络CNN/image-20201124120705437.png" alt="标号总结"></p>
+<p>其中，padding表示添加的外围边界宽度，filter表示卷积核，Activations表示激活函数的输入，bias表示偏执常量(为了方便计算，编程时采用四维张量)</p>
+<h3 id="卷积网络实例1"><a href="#卷积网络实例1" class="headerlink" title="卷积网络实例1"></a>卷积网络实例1</h3><p><img src="/images/神经网络CNN/image-20201124121650285.png" alt="卷积网络实例"></p>
+<h3 id="池化层"><a href="#池化层" class="headerlink" title="池化层"></a>池化层</h3><p><img src="/images/神经网络CNN/image-20201124121941815.png" alt="最大池化层"></p>
+<h3 id="卷积网络实例2"><a href="#卷积网络实例2" class="headerlink" title="卷积网络实例2"></a>卷积网络实例2</h3><p><img src="/images/神经网络CNN/image-20201124122422964.png" alt="卷积网络实例(完整)"></p>
+<p>随着网络深度的加深，数据的宽度和高度都会逐渐减小</p>
+<p><img src="/images/神经网络CNN/image-20201124122628962.png" alt="参数维度"></p>
+<h2 id="3-为什么要使用卷积网络（优势）"><a href="#3-为什么要使用卷积网络（优势）" class="headerlink" title="3.为什么要使用卷积网络（优势）"></a>3.为什么要使用卷积网络（优势）</h2><p>先看张图</p>
+<p><img src="/images/神经网络CNN/image-20201124155002461.png" alt="卷积网络和传统神经网络"></p>
+<p>从上图可以看出，传统网络中，一层含3072个神经元与一层含4704个神经元之间的参数量达到了14000；而在卷积网络中，仅需6个5*5*3维的卷积核即可，实际参数量为$(5<em>5</em>3+1)*6 = 456$ （图上计算有误）。</p>
+<p>为什么卷积网络可以减少权重变量？主要是依靠以下两个特性</p>
+<h3 id="权值共享"><a href="#权值共享" class="headerlink" title="权值共享"></a>权值共享</h3><p><img src="/images/神经网络CNN/image-20201124160253715.png" alt="权值共享实例"></p>
+<p>在输入图像的不同区域使用相同的参数（卷积核），9个参数将会有16个输出</p>
+<h3 id="稀疏连接"><a href="#稀疏连接" class="headerlink" title="稀疏连接"></a>稀疏连接</h3><p><img src="/images/神经网络CNN/image-20201124161033315.png" alt="稀疏连接"></p>
+<p>右边的每个神经元节点仅与左边9个(部分)神经元连接</p>
+<h1 id="CNN实例"><a href="#CNN实例" class="headerlink" title="CNN实例"></a>CNN实例</h1><h2 id="目标探测介绍"><a href="#目标探测介绍" class="headerlink" title="目标探测介绍"></a>目标探测介绍</h2><h3 id="通俗理解"><a href="#通俗理解" class="headerlink" title="通俗理解"></a>通俗理解</h3><p>模型知道某个物品在图像在哪的算法就是目标检测。</p>
 <h3 id="任务"><a href="#任务" class="headerlink" title="任务"></a>任务</h3><p>根据分类对象个数的不同分为单目标和多目标任务</p>
 <p><img src="/images/image-20201116100137605.png" alt="目标检测任务分类"></p>
 <h3 id="直接思路"><a href="#直接思路" class="headerlink" title="直接思路"></a>直接思路</h3><p>转化为分类，回归问题</p>
@@ -635,7 +659,7 @@
 <p><img src="/images/image-20201116102406321.png" alt="神经网络分类"></p>
 <h3 id="算法步骤"><a href="#算法步骤" class="headerlink" title="算法步骤"></a>算法步骤</h3><ol>
 <li><p>分类器的训练——直接使用ImageNet模型(有关ImageNet数据集的介绍见博客另一篇文章)</p>
-<p><img src="../images/image-20201116102702513.png" alt="ImageNet"></p>
+<p><img src="/images/image-20201116102702513.png" alt="ImageNet"></p>
 </li>
 <li><p>Fine-tune分类模型</p>
 <p>选择20类进行探测；对原始分类模型结构进行更改；最终确定21个目标（20类+其他）</p>
@@ -644,8 +668,16 @@
 <p>图片计算候选区域；候选区域切分图片大小，变成输入大小；提取相应特征；存储特征（一般容量很大）</p>
 <p><img src="/images/image-20201116104241163.png" alt="特征提取"></p>
 </li>
-<li></li>
+<li><p>单独目标探测器训练</p>
+<p><img src="/images/image-20201117104716437.png" alt="单独目标探测器训练"></p>
+</li>
+<li><p>单独目标回归器训练——基于候选区域微调</p>
+<p><img src="/images/image-20201117105334368.png" alt="候选区域微调"></p>
+</li>
 </ol>
+<h3 id="测试过程"><a href="#测试过程" class="headerlink" title="测试过程"></a>测试过程</h3><p><img src="/images/image-20201117105559250.png" alt="R-CNN测试过程"></p>
+<h3 id="评估方法"><a href="#评估方法" class="headerlink" title="评估方法"></a>评估方法</h3><p><img src="/images/image-20201117105824181.png" alt="IoU计算"></p>
+<p>分子是预测区域与真实区域之间的交集面积，分母是并集面积</p>
 <h2 id="神经网络回归：YoLo系列方法"><a href="#神经网络回归：YoLo系列方法" class="headerlink" title="神经网络回归：YoLo系列方法"></a>神经网络回归：YoLo系列方法</h2><h2 id="实例：目标探测模型训练与部署"><a href="#实例：目标探测模型训练与部署" class="headerlink" title="实例：目标探测模型训练与部署"></a>实例：目标探测模型训练与部署</h2>
             </div>
             <hr/>
@@ -1172,6 +1204,13 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
 </main>
 
 
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
+
 
 
     <footer class="page-footer bg-color">
@@ -1240,7 +1279,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">31.9k</span>&nbsp;字
+                class="white-color">39.2k</span>&nbsp;字
             
             
             

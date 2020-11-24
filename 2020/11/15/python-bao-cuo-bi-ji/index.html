@@ -586,14 +586,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.4k
+                    1.7k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    6 分
+                    7 分
                 </div>
                 
 
@@ -747,6 +747,25 @@ array<span class="token punctuation">(</span><span class="token punctuation">[</
        <span class="token punctuation">[</span>  <span class="token number">3</span><span class="token punctuation">,</span>   <span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
 <span class="token number">12345678910</span></code></pre>
 <p><strong>可以看到ravel返回的是视图(参考数据库中的视图进行理解)，修改a之后x的内容并不会发生改变。不过注意a已经变为一维的了，x还是二维的，a只是将x的数据以不同的方式进行呈现</strong>。</p>
+<h1 id="成功解决AxisError-axis-1-is-out-of-bounds-for-array-of-dimension-0"><a href="#成功解决AxisError-axis-1-is-out-of-bounds-for-array-of-dimension-0" class="headerlink" title="成功解决AxisError: axis -1 is out of bounds for array of dimension 0"></a>成功解决AxisError: axis -1 is out of bounds for array of dimension 0</h1><p>python机器学习及实践（从零开始kaggle竞赛之路）第二章的2.1.2.5集成模型程序报错：numpy.core._internal.AxisError: axis 0 is out of bounds for array of dimension 0:</p>
+<p>1.原因是本段代码在python3以上执行时：</p>
+<pre><code>print(np.sort(zip(etr.feature_importances_,bosten.feature_names),axis=0))</code></pre>
+<p>zip函数返回的是迭代器结果</p>
+<p>在python2.7下执行是通过的</p>
+<p>2.修改代码为：</p>
+<pre><code>print(np.sort(list(zip(etr.feature_importances_,bosten.feature_names)),axis=0))</code></pre>
+<p>3.报错原因：主要是因为python3中将zip进行了更新，zip() 返回的是一个对象，目的其实是为了减少内存。对象是不能直接迭代的，若需要迭代则需转化为可迭代对象。</p>
+<h1 id="python内置函数中enumerate-函数的作用"><a href="#python内置函数中enumerate-函数的作用" class="headerlink" title="python内置函数中enumerate() 函数的作用"></a>python内置函数中enumerate() 函数的作用</h1><p>1.描述</p>
+<p>enumerate() 函数用于将一个可遍历的数据对象(如列表、元组或字符串)组合为一个索引序列，同时列出数据和数据下标，一般用在 for 循环当中。</p>
+<p>2.语法</p>
+<pre class=" language-python"><code class="language-python">enumerate<span class="token punctuation">(</span>sequence<span class="token punctuation">,</span> <span class="token punctuation">[</span>start<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span></code></pre>
+<p>3.参数</p>
+<ul>
+<li>sequence – 一个序列、迭代器或其他支持迭代对象。</li>
+<li>start – 下标起始位置。</li>
+</ul>
+<p>4.返回值</p>
+<p>返回 enumerate(枚举) 对象。</p>
 
             </div>
             <hr/>
@@ -1063,10 +1082,10 @@ Region Proposals区域选择：用selective search(选择性搜索)代替传统�
                     <div class="summary block-with-text">
                         
                              学习神经网络，深度学习的一些笔记
-神经网络两个问题1 为什么需要使用激活函数如果网络中的神经元没有激活函数，如下图所示，可以看出该网络是x1和x2的线性组合
+神经网络1、两个问题1.1 为什么需要使用激活函数如果网络中的神经元没有激活函数，如下图所示，可以看出该网络是x1和x2的线性组合
 
 因此，最终训练出来的永远都是一条直线，而不能很好的达到分类效果
-2 随机初始化
+1.2
                         
                     </div>
                     <div class="publish-info">
@@ -1345,7 +1364,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">31.9k</span>&nbsp;字
+                class="white-color">39.2k</span>&nbsp;字
             
             
             
