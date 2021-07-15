@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Python报错笔记, Song">
+    <meta name="keywords" content="【Python】报错笔记, Song">
     <meta name="description" content="每天记录一点学习收获">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Python报错笔记 | Song</title>
+    <title>【Python】报错笔记 | Song</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -417,12 +417,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/3.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Python报错笔记</h1>
+                    <h1 class="description center-align post-title">【Python】报错笔记</h1>
                 </div>
             </div>
         </div>
@@ -579,7 +579,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2020-11-16
+                    2021-07-15
                 </div>
                 
 
@@ -609,57 +609,63 @@
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <p>记录python编程过程中遇到的一些报错，警告的处理办法</p>
-<h1 id="fillna-函数填充报错SettingWithCopyWarning"><a href="#fillna-函数填充报错SettingWithCopyWarning" class="headerlink" title="fillna()函数填充报错SettingWithCopyWarning"></a>fillna()函数填充报错SettingWithCopyWarning</h1><pre class=" language-python"><code class="language-python"><span class="token comment" spellcheck="true">#编写决策树模型预测泰坦尼克号乘客生还数据时</span>
-<span class="token comment" spellcheck="true">#对缺失数据的填补，采用中位数和平均值都是对模型偏差程度影响最小的策略</span>
-X<span class="token punctuation">[</span><span class="token string">'age'</span><span class="token punctuation">]</span><span class="token punctuation">.</span>fillna<span class="token punctuation">(</span>X<span class="token punctuation">[</span><span class="token string">'age'</span><span class="token punctuation">]</span><span class="token punctuation">.</span>mean<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> inplace<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
-<span class="token comment" spellcheck="true">#报错语句如下：</span>
-SettingWithCopyWarning<span class="token punctuation">:</span> 
-A value <span class="token keyword">is</span> trying to be set on a copy of a slice <span class="token keyword">from</span> a DataFrame
-See the caveats <span class="token keyword">in</span> the documentation<span class="token punctuation">:</span> https<span class="token punctuation">:</span><span class="token operator">//</span>pandas<span class="token punctuation">.</span>pydata<span class="token punctuation">.</span>org<span class="token operator">/</span>pandas<span class="token operator">-</span>docs<span class="token operator">/</span>stable<span class="token operator">/</span>user_guide<span class="token operator">/</span>indexing<span class="token punctuation">.</span>html<span class="token comment" spellcheck="true">#returning-a-view-versus-a-copy</span>
-  self<span class="token punctuation">.</span>_update_inplace<span class="token punctuation">(</span>new_data<span class="token punctuation">)</span></code></pre>
+<h1 id="fillna-函数填充报错SettingWithCopyWarning"><a href="#fillna-函数填充报错SettingWithCopyWarning" class="headerlink" title="fillna()函数填充报错SettingWithCopyWarning"></a>fillna()函数填充报错SettingWithCopyWarning</h1><pre class=" language-lang-python"><code class="language-lang-python">#编写决策树模型预测泰坦尼克号乘客生还数据时
+#对缺失数据的填补，采用中位数和平均值都是对模型偏差程度影响最小的策略
+X['age'].fillna(X['age'].mean(), inplace=True)
+#报错语句如下：
+SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  self._update_inplace(new_data)
+</code></pre>
 <h3 id="报错原因"><a href="#报错原因" class="headerlink" title="报错原因"></a>报错原因</h3><p>这是因为凡是出现链式赋值（例x=y=z=1）的情况，pandas不确定到底返回的是引用还是拷贝。所以干脆报warning,我上边那个函数就是对age列的缺失值全部赋为平均值。</p>
 <h3 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h3><p>未找到解决办法</p>
-<h1 id="np-array-的shape-2-与-2-1-的分别是什么意思"><a href="#np-array-的shape-2-与-2-1-的分别是什么意思" class="headerlink" title="np.array 的shape (2,)与(2,1)的分别是什么意思"></a>np.array 的shape (2,)与(2,1)的分别是什么意思</h1><h3 id="1-2-的shape值-2-，意思是一维数组，数组中有2个元素。"><a href="#1-2-的shape值-2-，意思是一维数组，数组中有2个元素。" class="headerlink" title="[1,2]的shape值(2,)，意思是一维数组，数组中有2个元素。"></a>[1,2]的shape值(2,)，意思是一维数组，数组中有2个元素。</h3><pre class=" language-python"><code class="language-python">a <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-a<span class="token punctuation">.</span>shape</code></pre>
+<h1 id="np-array-的shape-2-与-2-1-的分别是什么意思"><a href="#np-array-的shape-2-与-2-1-的分别是什么意思" class="headerlink" title="np.array 的shape (2,)与(2,1)的分别是什么意思"></a>np.array 的shape (2,)与(2,1)的分别是什么意思</h1><h3 id="1-2-的shape值-2-，意思是一维数组，数组中有2个元素。"><a href="#1-2-的shape值-2-，意思是一维数组，数组中有2个元素。" class="headerlink" title="[1,2]的shape值(2,)，意思是一维数组，数组中有2个元素。"></a>[1,2]的shape值(2,)，意思是一维数组，数组中有2个元素。</h3><pre class=" language-lang-python"><code class="language-lang-python">a = np.array([1,2,3])
+a.shape
+</code></pre>
 <p>输出为(3,)<br><strong>它更多的是和多维做对比，表示一维数组，如果非要从行列的角度考虑。如果 W.shape = (2, 4), x.shape = (2, ) np.dot(W.T, x)：此时x是列向量, np.dot(x, W) 此时 x 是行向量，两种情况下返回的也均是一维向量，无所谓行列的概念。</strong></p>
-<h3 id="1-2-的shape值是-2-1-，意思是一个二维数组，每行有1个元素。"><a href="#1-2-的shape值是-2-1-，意思是一个二维数组，每行有1个元素。" class="headerlink" title="[[1],[2]]的shape值是(2,1)，意思是一个二维数组，每行有1个元素。"></a>[[1],[2]]的shape值是(2,1)，意思是一个二维数组，每行有1个元素。</h3><pre class=" language-python"><code class="language-python">a <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-<span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-a<span class="token punctuation">.</span>shape</code></pre>
+<h3 id="1-2-的shape值是-2-1-，意思是一个二维数组，每行有1个元素。"><a href="#1-2-的shape值是-2-1-，意思是一个二维数组，每行有1个元素。" class="headerlink" title="[[1],[2]]的shape值是(2,1)，意思是一个二维数组，每行有1个元素。"></a>[[1],[2]]的shape值是(2,1)，意思是一个二维数组，每行有1个元素。</h3><pre class=" language-lang-python"><code class="language-lang-python">a = np.array([[1,2,3],
+[4,5,6]])
+a.shape
+</code></pre>
 <p>输出为(2,3)</p>
-<h3 id="1-2-的shape值是（1，2），意思是一个二维数组，每行有2个元素。"><a href="#1-2-的shape值是（1，2），意思是一个二维数组，每行有2个元素。" class="headerlink" title="[[1,2]]的shape值是（1，2），意思是一个二维数组，每行有2个元素。"></a>[[1,2]]的shape值是（1，2），意思是一个二维数组，每行有2个元素。</h3><pre class=" language-python"><code class="language-python">a <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-a<span class="token punctuation">.</span>shape</code></pre>
+<h3 id="1-2-的shape值是（1，2），意思是一个二维数组，每行有2个元素。"><a href="#1-2-的shape值是（1，2），意思是一个二维数组，每行有2个元素。" class="headerlink" title="[[1,2]]的shape值是（1，2），意思是一个二维数组，每行有2个元素。"></a>[[1,2]]的shape值是（1，2），意思是一个二维数组，每行有2个元素。</h3><pre class=" language-lang-python"><code class="language-lang-python">a = np.array([[1,2,3]])
+a.shape
+</code></pre>
 <p>输出为(1,3)</p>
 <h1 id="Python的reshape的用法"><a href="#Python的reshape的用法" class="headerlink" title="Python的reshape的用法"></a>Python的reshape的用法</h1><h2 id="numpy中reshape函数的三种常见相关用法"><a href="#numpy中reshape函数的三种常见相关用法" class="headerlink" title="numpy中reshape函数的三种常见相关用法"></a>numpy中reshape函数的三种常见相关用法</h2><ul>
 <li><p>numpy.arange(n).reshape(a, b)   依次生成n个自然数，并且以a行b列的数组形式显示</p>
-<pre class=" language-python"><code class="language-python">np<span class="token punctuation">.</span>arange<span class="token punctuation">(</span><span class="token number">16</span><span class="token punctuation">)</span><span class="token punctuation">.</span>reshape<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">8</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">#生成16个自然数，以2行8列的形式显示</span>
-<span class="token comment" spellcheck="true"># Out: </span>
-<span class="token comment" spellcheck="true"># array([[ 0,  1,  2,  3,  4,  5,  6,  7],</span>
-<span class="token comment" spellcheck="true">#       [ 8,  9, 10, 11, 12, 13, 14, 15]])</span></code></pre>
+<pre class=" language-lang-python"><code class="language-lang-python">np.arange(16).reshape(2,8) #生成16个自然数，以2行8列的形式显示
+# Out: 
+# array([[ 0,  1,  2,  3,  4,  5,  6,  7],
+#       [ 8,  9, 10, 11, 12, 13, 14, 15]])
+</code></pre>
 </li>
-<li><p>mat (or array).reshape(c, -1)   必须是<strong>矩阵格式或者数组格式</strong>，才能使用 .reshape(c, -1) 函数， 表示将此矩阵或者数组重组，以 c行d列的形式表示，**-1用于标记该维度大小采用自动计算确定**</p>
-<pre class=" language-python"><code class="language-python">arr<span class="token punctuation">.</span>shape    <span class="token comment" spellcheck="true"># (a,b)</span>
-arr<span class="token punctuation">.</span>reshape<span class="token punctuation">(</span>m<span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">#改变维度为m行、d列 （-1表示列数自动计算，d= a*b /m ）</span>
-arr<span class="token punctuation">.</span>reshape<span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span>m<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">#改变维度为d行、m列 （-1表示行数自动计算，d= a*b /m ）</span></code></pre>
-<p>-1的作用就在此**: 自动计算d：d=数组或者矩阵里面所有的元素个数/c**, d必须是整数，不然报错）</p>
+<li><p>mat (or array).reshape(c, -1)   必须是<strong>矩阵格式或者数组格式</strong>，才能使用 .reshape(c, -1) 函数， 表示将此矩阵或者数组重组，以 c行d列的形式表示，<strong>-1用于标记该维度大小采用自动计算确定</strong></p>
+<pre class=" language-lang-python"><code class="language-lang-python">arr.shape    # (a,b)
+arr.reshape(m,-1) #改变维度为m行、d列 （-1表示列数自动计算，d= a*b /m ）
+arr.reshape(-1,m) #改变维度为d行、m列 （-1表示行数自动计算，d= a*b /m ）
+</code></pre>
+<p>-1的作用就在此<strong>: 自动计算d：d=数组或者矩阵里面所有的元素个数/c</strong>, d必须是整数，不然报错）</p>
 <p>（reshape(-1, m)即列数固定，行数需要计算）</p>
-<pre class=" language-python"><code class="language-python">arr<span class="token operator">=</span>np<span class="token punctuation">.</span>arange<span class="token punctuation">(</span><span class="token number">16</span><span class="token punctuation">)</span><span class="token punctuation">.</span>reshape<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">8</span><span class="token punctuation">)</span>
+<pre class=" language-lang-python"><code class="language-lang-python">arr=np.arange(16).reshape(2,8)
 arr
-<span class="token triple-quoted-string string">'''
+'''
 out:
 array([[ 0,  1,  2,  3,  4,  5,  6,  7],
        [ 8,  9, 10, 11, 12, 13, 14, 15]])
-'''</span>
+'''
 
-arr<span class="token punctuation">.</span>reshape<span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">#将arr变成4行的格式，列数自动计算的(c=4, d=16/4=4)</span>
-<span class="token triple-quoted-string string">'''
+arr.reshape(4,-1) #将arr变成4行的格式，列数自动计算的(c=4, d=16/4=4)
+'''
 out:
 array([[ 0,  1,  2,  3],
        [ 4,  5,  6,  7],
        [ 8,  9, 10, 11],
        [12, 13, 14, 15]])
-'''</span> 
-arr<span class="token punctuation">.</span>reshape<span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">#将arr变成8行的格式，列数自动计算的(c=8, d=16/8=2)</span>
-<span class="token triple-quoted-string string">'''
+''' 
+arr.reshape(8,-1) #将arr变成8行的格式，列数自动计算的(c=8, d=16/8=2)
+'''
 out:
 array([[ 0,  1],
        [ 2,  3],
@@ -669,100 +675,107 @@ array([[ 0,  1],
        [10, 11],
        [12, 13],
        [14, 15]])
-'''</span> 
-arr<span class="token punctuation">.</span>reshape<span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">#将arr变成10行的格式，列数自动计算的(c=10, d=16/10=1.6 != Int)</span>
-<span class="token triple-quoted-string string">'''
+''' 
+arr.reshape(10,-1) #将arr变成10行的格式，列数自动计算的(c=10, d=16/10=1.6 != Int)
+'''
 out:
 ValueError: cannot reshape array of size 16 into shape (10,newaxis)
-'''</span></code></pre>
+'''
+</code></pre>
 </li>
 <li><p>numpy.arange(a,b,c).reshape(m,n) ：将array的维度变为m 行 n列。</p>
 <p>numpy.arange(a,b,c)  从 数字a起, 步长为c, 到b结束，生成array</p>
-<pre class=" language-python"><code class="language-python">np<span class="token punctuation">.</span>arange<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">12</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token comment" spellcheck="true">#间隔2生成数组，范围在1到12之间</span>
-<span class="token comment" spellcheck="true"># Out: array([ 1,  3,  5,  7,  9, 11])</span>
+<pre class=" language-lang-python"><code class="language-lang-python">np.arange(1,12,2)#间隔2生成数组，范围在1到12之间
+# Out: array([ 1,  3,  5,  7,  9, 11])
 
-np<span class="token punctuation">.</span>arange<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">12</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">.</span>reshape<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span>
-<span class="token triple-quoted-string string">'''
+np.arange(1,12,2).reshape(3,2)
+'''
 Out: 
 array([[ 1,  3],
        [ 5,  7],
        [ 9, 11]])
-'''</span></code></pre>
+'''
+</code></pre>
 </li>
 </ul>
-<h2 id="reshape-1-1-转化成1行："><a href="#reshape-1-1-转化成1行：" class="headerlink" title="reshape(1,-1)转化成1行："></a>reshape(1,-1)转化成1行：</h2><pre class=" language-python"><code class="language-python"><span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
-x <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">,</span><span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">,</span><span class="token number">7</span><span class="token punctuation">,</span><span class="token number">8</span><span class="token punctuation">]</span><span class="token punctuation">,</span><span class="token punctuation">[</span><span class="token number">9</span><span class="token punctuation">,</span><span class="token number">10</span><span class="token punctuation">,</span><span class="token number">11</span><span class="token punctuation">,</span><span class="token number">12</span><span class="token punctuation">]</span><span class="token punctuation">,</span><span class="token punctuation">[</span><span class="token number">13</span><span class="token punctuation">,</span><span class="token number">14</span><span class="token punctuation">,</span><span class="token number">15</span><span class="token punctuation">,</span><span class="token number">16</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>x<span class="token punctuation">.</span>shape<span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>x<span class="token punctuation">.</span>reshape<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span class="token triple-quoted-string string">'''
+<h2 id="reshape-1-1-转化成1行："><a href="#reshape-1-1-转化成1行：" class="headerlink" title="reshape(1,-1)转化成1行："></a>reshape(1,-1)转化成1行：</h2><pre class=" language-lang-python"><code class="language-lang-python">import numpy as np
+x = np.array([[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16]])
+print(x.shape)
+print(x.reshape(1,-1))
+'''
 Out:
 (4, 4)
 [[ 1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16]]
-'''</span></code></pre>
+'''
+</code></pre>
 <h2 id="reshape-2-1-转换成两行："><a href="#reshape-2-1-转换成两行：" class="headerlink" title="reshape(2,-1)转换成两行："></a>reshape(2,-1)转换成两行：</h2><p><img src="/images/reshape.png" alt="reshape(2,-1)"></p>
 <h2 id="reshape-1-1-转换成1列："><a href="#reshape-1-1-转换成1列：" class="headerlink" title="reshape(-1,1)转换成1列："></a>reshape(-1,1)转换成1列：</h2><p><img src="/images/reshape2.png" alt="reshape(-1,1)"></p>
 <h1 id="numpy的ravel-和-flatten-函数"><a href="#numpy的ravel-和-flatten-函数" class="headerlink" title="numpy的ravel() 和 flatten()函数"></a>numpy的ravel() 和 flatten()函数</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>首先声明两者所要实现的功能是一致的（将多维数组降位一维）。这点从两个单词的意也可以看出来，ravel(散开，解开)，flatten（变平）。两者的区别在于返回拷贝（copy）还是返回视图（view），numpy.flatten()返回一份拷贝，对拷贝所做的修改不会影响（reflects）原始矩阵，而numpy.ravel()返回的是视图（view，也颇有几分C/C++引用reference的意味），会影响（reflects）原始矩阵。</p>
-<h2 id="两者功能"><a href="#两者功能" class="headerlink" title="两者功能"></a>两者功能</h2><pre class=" language-python"><code class="language-python">In <span class="token punctuation">[</span><span class="token number">14</span><span class="token punctuation">]</span><span class="token punctuation">:</span> x<span class="token operator">=</span>np<span class="token punctuation">.</span>array<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">,</span><span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<h2 id="两者功能"><a href="#两者功能" class="headerlink" title="两者功能"></a>两者功能</h2><pre class=" language-lang-python"><code class="language-lang-python">In [14]: x=np.array([[1,2],[3,4]])
 
-<span class="token comment" spellcheck="true"># flattenh函数和ravel函数在降维时默认是行序优先</span>
-In <span class="token punctuation">[</span><span class="token number">15</span><span class="token punctuation">]</span><span class="token punctuation">:</span> x<span class="token punctuation">.</span>flatten<span class="token punctuation">(</span><span class="token punctuation">)</span>
-Out<span class="token punctuation">[</span><span class="token number">15</span><span class="token punctuation">]</span><span class="token punctuation">:</span> array<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+# flattenh函数和ravel函数在降维时默认是行序优先
+In [15]: x.flatten()
+Out[15]: array([1, 2, 3, 4])
 
-In <span class="token punctuation">[</span><span class="token number">17</span><span class="token punctuation">]</span><span class="token punctuation">:</span> x<span class="token punctuation">.</span>ravel<span class="token punctuation">(</span><span class="token punctuation">)</span>
-Out<span class="token punctuation">[</span><span class="token number">17</span><span class="token punctuation">]</span><span class="token punctuation">:</span> array<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+In [17]: x.ravel()
+Out[17]: array([1, 2, 3, 4])
 
-<span class="token comment" spellcheck="true"># 传入'F'参数表示列序优先</span>
-In <span class="token punctuation">[</span><span class="token number">18</span><span class="token punctuation">]</span><span class="token punctuation">:</span> x<span class="token punctuation">.</span>flatten<span class="token punctuation">(</span><span class="token string">'F'</span><span class="token punctuation">)</span>
-Out<span class="token punctuation">[</span><span class="token number">18</span><span class="token punctuation">]</span><span class="token punctuation">:</span> array<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+# 传入'F'参数表示列序优先
+In [18]: x.flatten('F')
+Out[18]: array([1, 3, 2, 4])
 
-In <span class="token punctuation">[</span><span class="token number">19</span><span class="token punctuation">]</span><span class="token punctuation">:</span> x<span class="token punctuation">.</span>ravel<span class="token punctuation">(</span><span class="token string">'F'</span><span class="token punctuation">)</span>
-Out<span class="token punctuation">[</span><span class="token number">19</span><span class="token punctuation">]</span><span class="token punctuation">:</span> array<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+In [19]: x.ravel('F')
+Out[19]: array([1, 3, 2, 4])
 
-<span class="token comment" spellcheck="true">#reshape函数当参数只有一个-1时表示将数组降为一维</span>
-In <span class="token punctuation">[</span><span class="token number">21</span><span class="token punctuation">]</span><span class="token punctuation">:</span> x<span class="token punctuation">.</span>reshape<span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
-Out<span class="token punctuation">[</span><span class="token number">21</span><span class="token punctuation">]</span><span class="token punctuation">:</span> array<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-<span class="token comment" spellcheck="true">#x.T表示x的转置</span>
-In <span class="token punctuation">[</span><span class="token number">22</span><span class="token punctuation">]</span><span class="token punctuation">:</span> x<span class="token punctuation">.</span>T<span class="token punctuation">.</span>reshape<span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
-Out<span class="token punctuation">[</span><span class="token number">22</span><span class="token punctuation">]</span><span class="token punctuation">:</span> array<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-<span class="token number">12345678910111213141516171819202122</span></code></pre>
-<h2 id="两者区别"><a href="#两者区别" class="headerlink" title="两者区别"></a>两者区别</h2><pre class=" language-python"><code class="language-python"><span class="token operator">>></span><span class="token operator">></span> x <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-<span class="token operator">>></span><span class="token operator">></span> a <span class="token operator">=</span> x<span class="token punctuation">.</span>flatten<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token operator">>></span><span class="token operator">></span> a<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">100</span>
-<span class="token operator">>></span><span class="token operator">>></span> a
-array<span class="token punctuation">(</span><span class="token punctuation">[</span>  <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">,</span>   <span class="token number">3</span><span class="token punctuation">,</span>   <span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-<span class="token operator">>></span><span class="token operator">></span> x
-array<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-       <span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span>            
-<span class="token number">12345678</span></code></pre>
+#reshape函数当参数只有一个-1时表示将数组降为一维
+In [21]: x.reshape(-1)
+Out[21]: array([1, 2, 3, 4])
+#x.T表示x的转置
+In [22]: x.T.reshape(-1)
+Out[22]: array([1, 3, 2, 4])
+12345678910111213141516171819202122
+</code></pre>
+<h2 id="两者区别"><a href="#两者区别" class="headerlink" title="两者区别"></a>两者区别</h2><pre class=" language-lang-python"><code class="language-lang-python">>>> x = np.array([[1, 2], [3, 4]])
+>>> a = x.flatten()
+>>> a[1] = 100
+>>>> a
+array([  1, 100,   3,   4])
+>>> x
+array([[1, 2],
+       [3, 4]])            
+12345678
+</code></pre>
 <p>通过上面的程序可以发现flatten函数返回的是拷贝,修改返回的a之后原始的x并未改变。</p>
-<pre class=" language-python"><code class="language-python"><span class="token operator">>></span><span class="token operator">></span> x <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-<span class="token operator">>></span><span class="token operator">></span> a <span class="token operator">=</span> x<span class="token punctuation">.</span>ravel<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token operator">>></span><span class="token operator">></span> a
-array<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-<span class="token operator">>></span><span class="token operator">></span> a<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">100</span>
-<span class="token operator">>></span><span class="token operator">></span> a
-array<span class="token punctuation">(</span><span class="token punctuation">[</span>  <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">,</span>   <span class="token number">3</span><span class="token punctuation">,</span>   <span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-<span class="token operator">>></span><span class="token operator">></span> x
-array<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">[</span>  <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-       <span class="token punctuation">[</span>  <span class="token number">3</span><span class="token punctuation">,</span>   <span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-<span class="token number">12345678910</span></code></pre>
+<pre class=" language-lang-python"><code class="language-lang-python">>>> x = np.array([[1, 2], [3, 4]])
+>>> a = x.ravel()
+>>> a
+array([1, 2, 3, 4])
+>>> a[1] = 100
+>>> a
+array([  1, 100,   3,   4])
+>>> x
+array([[  1, 100],
+       [  3,   4]])
+12345678910
+</code></pre>
 <p><strong>可以看到ravel返回的是视图(参考数据库中的视图进行理解)，修改a之后x的内容并不会发生改变。不过注意a已经变为一维的了，x还是二维的，a只是将x的数据以不同的方式进行呈现</strong>。</p>
 <h1 id="成功解决AxisError-axis-1-is-out-of-bounds-for-array-of-dimension-0"><a href="#成功解决AxisError-axis-1-is-out-of-bounds-for-array-of-dimension-0" class="headerlink" title="成功解决AxisError: axis -1 is out of bounds for array of dimension 0"></a>成功解决AxisError: axis -1 is out of bounds for array of dimension 0</h1><p>python机器学习及实践（从零开始kaggle竞赛之路）第二章的2.1.2.5集成模型程序报错：numpy.core._internal.AxisError: axis 0 is out of bounds for array of dimension 0:</p>
 <p>1.原因是本段代码在python3以上执行时：</p>
-<pre><code>print(np.sort(zip(etr.feature_importances_,bosten.feature_names),axis=0))</code></pre>
-<p>zip函数返回的是迭代器结果</p>
+<pre><code>print(np.sort(zip(etr.feature_importances_,bosten.feature_names),axis=0))
+</code></pre><p>zip函数返回的是迭代器结果</p>
 <p>在python2.7下执行是通过的</p>
 <p>2.修改代码为：</p>
-<pre><code>print(np.sort(list(zip(etr.feature_importances_,bosten.feature_names)),axis=0))</code></pre>
-<p>3.报错原因：主要是因为python3中将zip进行了更新，zip() 返回的是一个对象，目的其实是为了减少内存。对象是不能直接迭代的，若需要迭代则需转化为可迭代对象。</p>
+<pre><code>print(np.sort(list(zip(etr.feature_importances_,bosten.feature_names)),axis=0))
+</code></pre><p>3.报错原因：主要是因为python3中将zip进行了更新，zip() 返回的是一个对象，目的其实是为了减少内存。对象是不能直接迭代的，若需要迭代则需转化为可迭代对象。</p>
 <h1 id="python内置函数中enumerate-函数的作用"><a href="#python内置函数中enumerate-函数的作用" class="headerlink" title="python内置函数中enumerate() 函数的作用"></a>python内置函数中enumerate() 函数的作用</h1><p>1.描述</p>
 <p>enumerate() 函数用于将一个可遍历的数据对象(如列表、元组或字符串)组合为一个索引序列，同时列出数据和数据下标，一般用在 for 循环当中。</p>
 <p>2.语法</p>
-<pre class=" language-python"><code class="language-python">enumerate<span class="token punctuation">(</span>sequence<span class="token punctuation">,</span> <span class="token punctuation">[</span>start<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span></code></pre>
+<pre class=" language-lang-python"><code class="language-lang-python">enumerate(sequence, [start=0])
+</code></pre>
 <p>3.参数</p>
 <ul>
-<li>sequence – 一个序列、迭代器或其他支持迭代对象。</li>
-<li>start – 下标起始位置。</li>
+<li>sequence — 一个序列、迭代器或其他支持迭代对象。</li>
+<li>start — 下标起始位置。</li>
 </ul>
 <p>4.返回值</p>
 <p>返回 enumerate(枚举) 对象。</p>
@@ -1010,13 +1023,13 @@ array<span class="token punctuation">(</span><span class="token punctuation">[</
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2020/11/15/r-cnn/">
+                <a href="/2020/11/15/shen-du-xue-xi-r-cnn/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="R-CNN">
+                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="【深度学习】R-CNN">
                         
-                        <span class="card-title">R-CNN</span>
+                        <span class="card-title">【深度学习】R-CNN</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -1069,13 +1082,13 @@ Region Proposals区域选择：用selective search(选择性搜索)代替传统�
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/11/12/deeplearning/">
+                <a href="/2020/11/12/shen-du-xue-xi-deeplearning-ru-men/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="DeepLearning">
+                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="【深度学习】DeepLearning入门">
                         
-                        <span class="card-title">DeepLearning</span>
+                        <span class="card-title">【深度学习】DeepLearning入门</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -1107,12 +1120,12 @@ Region Proposals区域选择：用selective search(选择性搜索)代替传统�
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">
-                        <span class="chip bg-color">神经网络</span>
-                    </a>
-                    
                     <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">
                         <span class="chip bg-color">深度学习</span>
+                    </a>
+                    
+                    <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">
+                        <span class="chip bg-color">神经网络</span>
                     </a>
                     
                     <a href="/tags/Cousera/">
@@ -1364,7 +1377,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">44k</span>&nbsp;字
+                class="white-color">44.9k</span>&nbsp;字
             
             
             
