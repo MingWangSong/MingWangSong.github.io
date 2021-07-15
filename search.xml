@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>【NoSQL】入门笔记</title>
+      <link href="2021/07/15/nosql-ru-men-bi-ji/"/>
+      <url>2021/07/15/nosql-ru-men-bi-ji/</url>
+      
+        <content type="html"><![CDATA[<h2 id="1-NoSQL简史"><a href="#1-NoSQL简史" class="headerlink" title="1.NoSQL简史"></a>1.NoSQL简史</h2><p><img src="/images/%E3%80%90NoSQL%E3%80%91%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0.assets/clip_image001.png" alt=""></p><h2 id="2-什么是NoSQL？"><a href="#2-什么是NoSQL？" class="headerlink" title="2.什么是NoSQL？"></a>2.什么是NoSQL？</h2><p><img src="/images/%E3%80%90NoSQL%E3%80%91%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0.assets/clip_image002.png" alt=""></p><p>非关系型数据库统称为NoSQL</p><h2 id="3-为什么使用NoSQL？"><a href="#3-为什么使用NoSQL？" class="headerlink" title="3.为什么使用NoSQL？"></a>3.为什么使用NoSQL？</h2><p>一般来说，公司都是关系型数据库和非关系型数据库搭配使用。关系型数据库用于最终的数据存储，持久化；而非关系型数据库用于解决快速查询插入数据这一问题，抛弃了数据库的事务处理，从而降低了数据的安全性。</p><h2 id="4-关系型数据库VS非关系型数据库对比"><a href="#4-关系型数据库VS非关系型数据库对比" class="headerlink" title="4.关系型数据库VS非关系型数据库对比"></a>4.关系型数据库VS非关系型数据库对比</h2><p><img src="/images/%E3%80%90NoSQL%E3%80%91%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0.assets/clip_image003.png" alt=""></p><h2 id="5-常见的数据库排行"><a href="#5-常见的数据库排行" class="headerlink" title="5.常见的数据库排行"></a>5.常见的数据库排行</h2><p>官方网站：<a href="https://db-engines.com/en/ranking">https://db-engines.com/en/ranking</a></p><p><img src="/images/%E3%80%90NoSQL%E3%80%91%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0.assets/image-20210316091604144.png" alt=""></p><h2 id="6-NoSQL四大家族"><a href="#6-NoSQL四大家族" class="headerlink" title="6.NoSQL四大家族"></a>6.NoSQL四大家族</h2><p><img src="/images/%E3%80%90NoSQL%E3%80%91%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0.assets/image-20210316091657756.png" alt=""></p><p><img src="/images/%E3%80%90NoSQL%E3%80%91%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0.assets/image-20210316091829314.png" alt=""></p><p>上面提到的类JSON格式的数据是BSON，二进制JSON格式数据</p><p>一般，非关系型数据库被用于构建项目初期使用，方面随着需求的改变随时改变数据库结构，而不是前期将数据库表结构写死，导致功能很难拓展</p><p><img src="/images/%E3%80%90NoSQL%E3%80%91%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0.assets/image-20210316092924989.png" alt=""></p><p>列族存储一般是用于大数据存储，应对分布式数据存储</p><p><img src="/images/%E3%80%90NoSQL%E3%80%91%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0.assets/image-20210316093137012.png" alt=""></p><h2 id="7-NoSQL优缺点"><a href="#7-NoSQL优缺点" class="headerlink" title="7.NoSQL优缺点"></a>7.NoSQL优缺点</h2><p><img src="/images/%E3%80%90NoSQL%E3%80%91%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0.assets/image-20210316093305521.png" alt=""></p><p><img src="/images/%E3%80%90NoSQL%E3%80%91%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0.assets/image-20210316093345871.png" alt=""></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 数据库 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> NoSQL </tag>
+            
+            <tag> 笔记 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>【机器学习】AdaBoost模型</title>
       <link href="2020/12/13/ji-qi-xue-xi-adaboost-mo-xing/"/>
       <url>2020/12/13/ji-qi-xue-xi-adaboost-mo-xing/</url>
@@ -343,11 +370,11 @@
       
         <tags>
             
+            <tag> 笔记 </tag>
+            
             <tag> python </tag>
             
             <tag> 报错 </tag>
-            
-            <tag> 笔记 </tag>
             
         </tags>
       
@@ -432,9 +459,9 @@
       
         <tags>
             
-            <tag> MarkDown </tag>
-            
             <tag> blog </tag>
+            
+            <tag> MarkDown </tag>
             
         </tags>
       
