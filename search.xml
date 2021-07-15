@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>【JVM】生命周期</title>
+      <link href="2021/07/15/jvm-sheng-ming-zhou-qi/"/>
+      <url>2021/07/15/jvm-sheng-ming-zhou-qi/</url>
+      
+        <content type="html"><![CDATA[<h2 id="JVM的生命周期"><a href="#JVM的生命周期" class="headerlink" title="JVM的生命周期"></a>JVM的生命周期</h2><p><img src="/images/%E3%80%90JVM%E3%80%91%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/image-20210524221836756.png" alt=""></p><h3 id="实例1"><a href="#实例1" class="headerlink" title="实例1"></a>实例1</h3><pre class=" language-lang-java"><code class="language-lang-java">public class StackStruTest {    public static void main(String[] args) {        int i = 2;        int j = 3;        int k = i + j;        try {            Thread.sleep(6000);        } catch (InterruptedException e) {            e.printStackTrace();        }        System.out.println("Hello!!!");    }}//jps用于打印程序中运行的进程//以下为cmd命令窗口的输入输出记录//D:\Code\JAVA\MyJVMLesson>jps   //2932 Jps//11916//2572 StackStruTest  //睡眠中,进程还存活////D:\Code\JAVA\MyJVMLesson>jps//28544 Jps//11916</code></pre><h3 id="虚拟机退出情况"><a href="#虚拟机退出情况" class="headerlink" title="虚拟机退出情况"></a>虚拟机退出情况</h3><p><img src="/images/%E3%80%90JVM%E3%80%91%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/image-20210524222258967.png" alt=""></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Java </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 学习笔记 </tag>
+            
+            <tag> java虚拟机 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>【JVM】类加载子系统</title>
       <link href="2021/07/15/jvm-lei-jia-zai-zi-xi-tong/"/>
       <url>2021/07/15/jvm-lei-jia-zai-zi-xi-tong/</url>
