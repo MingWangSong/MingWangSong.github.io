@@ -4,6 +4,147 @@
   
     
     <entry>
+      <title>【Java线程4】线程同步</title>
+      <link href="2021/08/05/java-xian-cheng-4-xian-cheng-tong-bu/"/>
+      <url>2021/08/05/java-xian-cheng-4-xian-cheng-tong-bu/</url>
+      
+        <content type="html"><![CDATA[]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Java </tag>
+            
+            <tag> 多线程 </tag>
+            
+            <tag> 线程安全 </tag>
+            
+            <tag> 线程同步 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>【Java线程3】线程状态</title>
+      <link href="2021/08/05/java-xian-cheng-3-xian-cheng-zhuang-tai/"/>
+      <url>2021/08/05/java-xian-cheng-3-xian-cheng-zhuang-tai/</url>
+      
+        <content type="html"><![CDATA[<p>[TOC]</p><hr><h2 id="1-线程生命周期"><a href="#1-线程生命周期" class="headerlink" title="1 线程生命周期"></a>1 线程生命周期</h2><h3 id="1-1生命周期图"><a href="#1-1生命周期图" class="headerlink" title="1.1生命周期图"></a>1.1生命周期图</h3><p><img src="../images/%E3%80%90Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E3%80%91%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BhbmdlMTk5MQ==,size_16,color_FFFFFF,t_70" alt="线程状态图"></p><h3 id="1-2线程状态检测"><a href="#1-2线程状态检测" class="headerlink" title="1.2线程状态检测"></a>1.2线程状态检测</h3><p><img src="../images/%E3%80%90Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E3%80%91%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81/image-20210805160655341.png" alt="image-20210805160655341"></p><pre class=" language-lang-java"><code class="language-lang-java">public class stateThread implements Runnable{    @Override    public void run() {        try {            Thread.sleep(50);        } catch (InterruptedException e) {            e.printStackTrace();        }        System.out.println("睡眠结束----");    }    public static void main(String[] args) throws InterruptedException {        stateThread p = new stateThread();        //观察状态        //启动前        Thread thread = new Thread(p);        System.out.println(thread.getState());        //启动后        thread.start();        System.out.println(thread.getState());        //模拟线程里面睡眠进入TIMED_WAITING状态        while (thread.getState() != Thread.State.TERMINATED){            //加一点延迟            Thread.sleep(5);            System.out.println(thread.getState());        }    }}</code></pre><p><img src="../images/%E3%80%90Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E3%80%91%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81/image-20210805161823687.png" alt="打印输出"></p><h2 id="2线程停止"><a href="#2线程停止" class="headerlink" title="2线程停止"></a>2线程停止</h2><ul><li>不推荐使用JDK提供的stop()和destroy()方法（官方已经遗弃）</li><li>可以通过设置标志位进行操作线程停止</li></ul><pre class=" language-lang-java"><code class="language-lang-java">public class stopThread implements Runnable{    //第一步：定义一个停止标志位    boolean flag = false;    //第二步：实现一个线程方法    @Override    public void run() {        while (!flag){            System.out.println(Thread.currentThread().getName());        }    }    //第三步：启动线程模拟停止    public static void main(String[] args) {        stopThread p = new stopThread();        Thread thread = new Thread(p);        thread.start();        for (int i = 0; i < 500; i++) {            //当i为500时，停止线程，且主线程继续执行            if (i == 490){                p.flag = true;                System.out.println("次线程停止");            }            System.out.println(Thread.currentThread().getName()+i);        }    }}</code></pre><h2 id="3线程休眠（sleep方法）"><a href="#3线程休眠（sleep方法）" class="headerlink" title="3线程休眠（sleep方法）"></a>3线程休眠（sleep方法）</h2><ul><li><p>sleep(x)，其中x代表线程阻塞时间，单位：毫秒（1秒=1000毫秒）</p></li><li><p>时间消耗完后，线程进入就绪状态</p></li><li>（重点）线程睡眠时，不会释放锁</li><li>一般可以用睡眠来模拟网络延时，倒计时等</li></ul><pre class=" language-lang-java"><code class="language-lang-java">public class sleepThread {    public static void main(String[] args) throws InterruptedException {        //获取当前时间        Date startTime;        for (int i = 0; i < 5; i++) {            startTime = new Date(System.currentTimeMillis());            System.out.println(new SimpleDateFormat("HH:mm:ss").format(startTime));            Thread.sleep(1000);        }    }}</code></pre><p><img src="../images/%E3%80%90Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E3%80%91%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81/image-20210805152652203.png" alt="打印输出"></p><h2 id="4线程礼让（yield方法）"><a href="#4线程礼让（yield方法）" class="headerlink" title="4线程礼让（yield方法）"></a>4线程礼让（yield方法）</h2><p>让出当前CPU执行时间片，重新和其他线程竞争执行</p><pre class=" language-lang-java"><code class="language-lang-java">public class yieldThread implements Runnable{    @Override    public void run() {        System.out.println(Thread.currentThread().getName()+"准备执行");        Thread.yield();        System.out.println(Thread.currentThread().getName()+"结束执行");    }    public static void main(String[] args) {        yieldThread p = new yieldThread();        Thread thread1 = new Thread(p,"A");        Thread thread2 = new Thread(p,"B");        thread1.start();        thread2.start();    }}</code></pre><p><img src="../images/%E3%80%90Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E3%80%91%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81/image-20210805154824401.png" alt="image-20210805154824401"></p><h2 id="5线程强制执行（join方法）"><a href="#5线程强制执行（join方法）" class="headerlink" title="5线程强制执行（join方法）"></a>5线程强制执行（join方法）</h2><p>某线程调用此方法时，其他线程会阻塞，等待该线程执行完，再执行其他线程</p><pre class=" language-lang-java"><code class="language-lang-java">public class joinThread implements Runnable{    @Override    public void run() {        for (int i = 0; i < 100; i++) {            System.out.println(Thread.currentThread().getName()+i);        }    }    public static void main(String[] args) throws InterruptedException {        Thread thread = new Thread(new joinThread());        thread.start();        for (int i = 0; i < 100; i++) {            System.out.println(Thread.currentThread().getName()+i);            if(i==50){                thread.join();            }        }    }}</code></pre><h2 id="6线程优先级"><a href="#6线程优先级" class="headerlink" title="6线程优先级"></a>6线程优先级</h2><p><img src="../images/%E3%80%90Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E3%80%91%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81/image-20210805162544510.png" alt="image-20210805162544510"></p><p>默认优先级为5</p><pre class=" language-lang-java"><code class="language-lang-java">public class priorityThread extends Thread{    @Override    public void run() {        System.out.println(Thread.currentThread().getName()+"---->"+Thread.currentThread().getPriority());    }    public static void main(String[] args) {        priorityThread t1 = new priorityThread();        t1.setName("t1");        priorityThread t2 = new priorityThread();        t2.setName("t2");        priorityThread t3 = new priorityThread();        t3.setName("t3");        priorityThread t4 = new priorityThread();        t4.setName("t4");        //主线程优先级        System.out.println(Thread.currentThread().getPriority());        //设置优先级（先设置再启动）        t1.setPriority(Thread.MAX_PRIORITY);        t1.start();        t2.setPriority(Thread.MIN_PRIORITY);        t2.start();        t3.setPriority(Thread.NORM_PRIORITY);        t3.start();        t4.setPriority(9);        t4.start();    }}</code></pre><h2 id="7守护线程"><a href="#7守护线程" class="headerlink" title="7守护线程"></a>7守护线程</h2><ul><li>线程分为<strong>用户线程</strong>和<strong>守护线程</strong></li><li>虚拟机必须保证用户线程执行完毕再关闭</li><li>虚拟机不需保证守护线程执行完毕</li><li>常见守护线程：垃圾回收线程，内存记录日志线程等</li></ul><pre class=" language-lang-java"><code class="language-lang-java">public class daemonThread {    public static void main(String[] args) {        deomonTrue p1 = new deomonTrue();        daemonFalse p2= new daemonFalse();        Thread t1 = new Thread(p1);        //设置为守护线程，默认为false，为用户线程        t1.setDaemon(true);        t1.start();        new Thread(p2).start();    }}//守护线程class deomonTrue implements Runnable{    @Override    public void run() {        while (true){            System.out.println("我是守护线程！！！");        }    }}//用户线程class daemonFalse implements Runnable{    @Override    public void run() {        for (int i = 0; i < 10; i++) {            System.out.println("--------我是用户线程");        }        System.out.println("我用户线程结束了！！！！！！！！！！！1");    }}</code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Java </tag>
+            
+            <tag> 多线程，线程状态 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>【Java线程5】Thread类详解</title>
+      <link href="2021/08/05/java-xian-cheng-5-thread-lei-xiang-jie/"/>
+      <url>2021/08/05/java-xian-cheng-5-thread-lei-xiang-jie/</url>
+      
+        <content type="html"><![CDATA[<h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><p>看两行代码</p><pre class=" language-lang-jade"><code class="language-lang-jade">new Thread(() -> System.out.println("线程中的run方法")).start();new 代理类(new 主体类()).代理方法();</code></pre><p>显然，Thread类是一个代理类，通过代理实现了线程操作的功能。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Java </tag>
+            
+            <tag> 多线程 </tag>
+            
+            <tag> Thread </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>【Java线程2】线程的创建</title>
+      <link href="2021/08/04/java-xian-cheng-2-xian-cheng-chuang-jian/"/>
+      <url>2021/08/04/java-xian-cheng-2-xian-cheng-chuang-jian/</url>
+      
+        <content type="html"><![CDATA[<h2 id="1-三种创建方法"><a href="#1-三种创建方法" class="headerlink" title="1 三种创建方法"></a>1 三种创建方法</h2><p><img src="../images/%E3%80%90Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E3%80%91%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%88%9B%E5%BB%BA/image-20210804153541108.png" alt="线程创建方法"></p><h2 id="2-继承Thread类"><a href="#2-继承Thread类" class="headerlink" title="2 继承Thread类"></a>2 继承Thread类</h2><h3 id="2-1代码实现"><a href="#2-1代码实现" class="headerlink" title="2.1代码实现"></a>2.1代码实现</h3><pre class=" language-lang-java"><code class="language-lang-java">/**创建线程类步骤 * 1、继承Thread * 2、重写run()方法 * 3、创建对象调用start()方法 */public class extendThread extends Thread{    @Override    public void run() {        for(int i = 0; i < 4; i++){            System.out.println("run()方法："+i);        }    }    public static void main(String[] args) {        extendThread thread = new extendThread();        //thread.run();        thread.start();        for(int i = 0; i < 5; i++){            System.out.println("main()方法：----"+i);        }    }}</code></pre><h3 id="2-2输出对比"><a href="#2-2输出对比" class="headerlink" title="2.2输出对比"></a>2.2输出对比</h3><p>start()是启动线程方法，线程启动后，不会马上执行，是由CPU调度执行的</p><p><img src="../images/%E3%80%90Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E3%80%91%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%88%9B%E5%BB%BA/image-20210804155224898.png" alt="调用Start()方法"></p><p><img src="../images/%E3%80%90Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E3%80%91%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%88%9B%E5%BB%BA/image-20210804155412777.png" alt="调用run()方法"></p><h3 id="2-3-run-和start-的区别"><a href="#2-3-run-和start-的区别" class="headerlink" title="2.3 run()和start()的区别"></a>2.3 run()和start()的区别</h3><p>看一手源码~</p><p><img src="../images/%E3%80%90Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E3%80%91%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%88%9B%E5%BB%BA/image-20210804211103105.png" alt="image-20210804211103105"></p><p>从源码得知：</p><ul><li>线程状态<strong>不等于0</strong>时，抛出<code>IllegalThreadStateException()</code>异常，这就是说<strong>线程状态等于0</strong>时，表示线程start方法没有执行，即<strong>一个线程的start方法只能执行一次，不能重复多次</strong>。</li><li><strong>那么关键就是这个start0方法，它是由JVM实现，JVM去调用创建线程的方法，创建一个新的线程。所以Java线程调用start-&gt;start0方法，实际上是JVM调用JVM_StartThread方法，该方法最终要调用的是Java线程中的run()方法。</strong></li><li>直接调用run()方法，则没创建新的线程，因此存在多线程抢占的问题，只会按程序顺序执行。</li></ul><p><a href="https://blog.csdn.net/qq_33996921/article/details/106738629">终于搞懂线程的启动流程了_henry_2016的博客-CSDN博客</a></p><h3 id="2-4拓展问题—mian-是怎么启动主线程的"><a href="#2-4拓展问题—mian-是怎么启动主线程的" class="headerlink" title="2.4拓展问题—mian()是怎么启动主线程的"></a>2.4拓展问题—mian()是怎么启动主线程的</h3><h2 id="3-实现接口Runnable"><a href="#3-实现接口Runnable" class="headerlink" title="3 实现接口Runnable"></a>3 实现接口Runnable</h2><h3 id="3-1-代码实现"><a href="#3-1-代码实现" class="headerlink" title="3.1 代码实现"></a>3.1 代码实现</h3><pre class=" language-lang-java"><code class="language-lang-java">public class implementRunnable implements Runnable{    @Override    public void run() {        for(int i = 0; i < 1000; i++){            System.out.println("run()方法："+i);        }    }    public static void main(String[] args) {        implementRunnable p = new implementRunnable();        Thread thread = new Thread(p);        thread.start();        for(int i = 0; i < 100; i++){            System.out.println(Thread.currentThread().getName()+i);        }    }}</code></pre><h2 id="4-实现callable接口"><a href="#4-实现callable接口" class="headerlink" title="4 实现callable接口"></a>4 实现callable接口</h2><p><img src="../images/%E3%80%90Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E3%80%91%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%88%9B%E5%BB%BA/image-20210805121931061.png" alt="image-20210805121931061"></p><h2 id="5-总结"><a href="#5-总结" class="headerlink" title="5 总结"></a>5 总结</h2><p><img src="../images/%E3%80%90Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E3%80%91%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%88%9B%E5%BB%BA/image-20210805104810084.png" alt="image-20210805104810084"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Java </tag>
+            
+            <tag> 多线程 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>【Java线程1】入门基础</title>
+      <link href="2021/08/04/java-xian-cheng-1-ru-men-ji-chu/"/>
+      <url>2021/08/04/java-xian-cheng-1-ru-men-ji-chu/</url>
+      
+        <content type="html"><![CDATA[<h2 id="多线程执行与普通方法执行的区别"><a href="#多线程执行与普通方法执行的区别" class="headerlink" title="多线程执行与普通方法执行的区别"></a>多线程执行与普通方法执行的区别</h2><p><img src="../images/%E3%80%90Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E3%80%91%E5%85%A5%E9%97%A8%E5%9F%BA%E7%A1%80/image-20210804152023280.png" alt="image-20210804152023280"></p><h2 id="进程-Process-和线程-Thread"><a href="#进程-Process-和线程-Thread" class="headerlink" title="进程(Process)和线程(Thread)"></a>进程(Process)和线程(Thread)</h2><p><img src="../images/%E3%80%90Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E3%80%91%E5%85%A5%E9%97%A8%E5%9F%BA%E7%A1%80/image-20210804152551625.png" alt="image-20210804152551625"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Java </tag>
+            
+            <tag> 多线程 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>【Spring】Ioc的好处</title>
       <link href="2021/07/16/spring-ioc-de-hao-chu/"/>
       <url>2021/07/16/spring-ioc-de-hao-chu/</url>
@@ -13,7 +154,7 @@
       
       <categories>
           
-          <category> Java </category>
+          <category> 学习笔记 </category>
           
       </categories>
       
@@ -42,16 +183,18 @@
       
       <categories>
           
-          <category> Java </category>
+          <category> 学习笔记 </category>
           
       </categories>
       
       
         <tags>
             
-            <tag> java虚拟机 </tag>
+            <tag> JVM </tag>
             
-            <tag> 学习笔记 </tag>
+            <tag> Java </tag>
+            
+            <tag> JVM生命周期 </tag>
             
         </tags>
       
@@ -69,16 +212,18 @@
       
       <categories>
           
-          <category> Java </category>
+          <category> 学习笔记 </category>
           
       </categories>
       
       
         <tags>
             
-            <tag> 学习笔记 </tag>
+            <tag> JVM </tag>
             
-            <tag> Java虚拟机 </tag>
+            <tag> Java </tag>
+            
+            <tag> 类加载 </tag>
             
         </tags>
       
@@ -96,14 +241,18 @@
       
       <categories>
           
-          <category> Java </category>
+          <category> 学习笔记 </category>
           
       </categories>
       
       
         <tags>
             
-            <tag> Java虚拟机，学习笔记 </tag>
+            <tag> JVM </tag>
+            
+            <tag> java </tag>
+            
+            <tag> 运行时数据区 </tag>
             
         </tags>
       
@@ -121,7 +270,7 @@
       
       <categories>
           
-          <category> 数据库 </category>
+          <category> 学习笔记 </category>
           
       </categories>
       
@@ -130,7 +279,7 @@
             
             <tag> NoSQL </tag>
             
-            <tag> 笔记 </tag>
+            <tag> 数据库 </tag>
             
         </tags>
       
@@ -148,7 +297,7 @@
       
       <categories>
           
-          <category> 机器学习笔记 </category>
+          <category> 学习笔记 </category>
           
       </categories>
       
@@ -175,7 +324,7 @@
       
       <categories>
           
-          <category> 学习笔记 </category>
+          <category> 操作教程 </category>
           
       </categories>
       
@@ -183,6 +332,8 @@
         <tags>
             
             <tag> Linux </tag>
+            
+            <tag> 操作系统 </tag>
             
             <tag> 常用命令 </tag>
             
@@ -202,7 +353,7 @@
       
       <categories>
           
-          <category> 论文笔记 </category>
+          <category> 学习笔记 </category>
           
       </categories>
       
@@ -210,8 +361,6 @@
         <tags>
             
             <tag> 深度学习 </tag>
-            
-            <tag> 神经网络 </tag>
             
             <tag> 卷积神经网络 </tag>
             
@@ -233,7 +382,7 @@
       
       <categories>
           
-          <category> 论文笔记 </category>
+          <category> 学习笔记 </category>
           
       </categories>
       
@@ -242,9 +391,9 @@
             
             <tag> R-CNN </tag>
             
-            <tag> NMS </tag>
+            <tag> 目标检测 </tag>
             
-            <tag> Non-Maximum Suppression </tag>
+            <tag> NMS </tag>
             
             <tag> 非极大值抑制 </tag>
             
@@ -264,14 +413,14 @@
       
       <categories>
           
-          <category> 论文笔记 </category>
+          <category> 学习笔记 </category>
           
       </categories>
       
       
         <tags>
             
-            <tag> 数据预处理 </tag>
+            <tag> 数据处理 </tag>
             
             <tag> 图像 </tag>
             
@@ -302,13 +451,13 @@
       
         <tags>
             
-            <tag> R-CNN </tag>
-            
             <tag> 深度学习 </tag>
             
-            <tag> selective search </tag>
+            <tag> R-CNN </tag>
             
             <tag> 目标检测 </tag>
+            
+            <tag> selective search </tag>
             
         </tags>
       
@@ -326,7 +475,7 @@
       
       <categories>
           
-          <category> sklearn </category>
+          <category> 学习笔记 </category>
           
       </categories>
       
@@ -355,16 +504,16 @@
       
       <categories>
           
-          <category> 带整理的笔记 </category>
+          <category> 待完善内容 </category>
           
       </categories>
       
       
         <tags>
             
-            <tag> 笔记 </tag>
-            
             <tag> 草稿 </tag>
+            
+            <tag> 待解决 </tag>
             
         </tags>
       
@@ -389,7 +538,7 @@
       
         <tags>
             
-            <tag> 数据集介绍 </tag>
+            <tag> 数据集 </tag>
             
             <tag> 计算机视觉系统 </tag>
             
@@ -418,13 +567,13 @@
       
         <tags>
             
-            <tag> 神经网络 </tag>
+            <tag> 深度学习 </tag>
             
             <tag> CNN </tag>
             
-            <tag> 目标检测 </tag>
+            <tag> 神经网络 </tag>
             
-            <tag> 目标分类 </tag>
+            <tag> 目标检测 </tag>
             
         </tags>
       
@@ -442,18 +591,18 @@
       
       <categories>
           
-          <category> 论文笔记 </category>
+          <category> 学习笔记 </category>
           
       </categories>
       
       
         <tags>
             
-            <tag> R-CNN </tag>
+            <tag> 深度学习 </tag>
             
             <tag> CNN </tag>
             
-            <tag> SVM </tag>
+            <tag> R-CNN </tag>
             
         </tags>
       
@@ -471,14 +620,12 @@
       
       <categories>
           
-          <category> 编程笔记 </category>
+          <category> 编程报错笔记 </category>
           
       </categories>
       
       
         <tags>
-            
-            <tag> 笔记 </tag>
             
             <tag> python </tag>
             
@@ -511,10 +658,6 @@
             
             <tag> 神经网络 </tag>
             
-            <tag> Cousera </tag>
-            
-            <tag> AI </tag>
-            
         </tags>
       
     </entry>
@@ -522,7 +665,7 @@
     
     
     <entry>
-      <title>【论文合集】CVPR2019</title>
+      <title>【论文资料】CVPR2019</title>
       <link href="2020/11/09/lun-wen-he-ji-cvpr2019/"/>
       <url>2020/11/09/lun-wen-he-ji-cvpr2019/</url>
       
@@ -538,11 +681,9 @@
       
         <tags>
             
+            <tag> 论文合集 </tag>
+            
             <tag> CVPR </tag>
-            
-            <tag> 2019 </tag>
-            
-            <tag> 资料 </tag>
             
         </tags>
       
@@ -560,7 +701,7 @@
       
       <categories>
           
-          <category> 学习笔记 </category>
+          <category> 操作教程 </category>
           
       </categories>
       
@@ -587,18 +728,18 @@
       
       <categories>
           
-          <category> 学习笔记 </category>
+          <category> 操作教程 </category>
           
       </categories>
       
       
         <tags>
             
+            <tag> Hexo博客 </tag>
+            
             <tag> blog </tag>
             
             <tag> Hexo </tag>
-            
-            <tag> command </tag>
             
         </tags>
       
