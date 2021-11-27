@@ -586,14 +586,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    0
+                    1k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    4 分
                 </div>
                 
 
@@ -608,7 +608,196 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                
+                <h2 id="ShardingSphere数据加密实践"><a href="#ShardingSphere数据加密实践" class="headerlink" title="ShardingSphere数据加密实践"></a>ShardingSphere数据加密实践</h2><h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h3><p>数据加密是指对某些敏感信息通过加密规则进行数据的变形，实现敏感隐私数据的可靠保护。 涉及客户安全数据或者一些商业性敏感数据，如身份证号、手机号、卡号、客户号等个人信息按照相关部门规定，都需要进行数据加密。</p>
+<p>对于数据加密的需求，在现实的业务场景中一般分为两种情况：</p>
+<ul>
+<li><p>新业务上线</p>
+<ul>
+<li>加密存储到数据库，使⽤时解密</li>
+<li>没有存量明⽂数据的清洗问题，实现相对简单</li>
+</ul>
+</li>
+<li><p>已上线业务</p>
+<ul>
+<li><p>历史数据需要如何进行加密处理，即<strong>洗数</strong>。</p>
+</li>
+<li><p>如何能在不改动业务 SQL 和逻辑情况下，将新增数据进行加密处理，并存储到数据库；在使用时，再进行解密取出。</p>
+</li>
+<li><p>如何较为安全、无缝、透明化地实现业务系统在<strong>明文与密文数据间的迁移</strong>。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="1-常见解决方案"><a href="#1-常见解决方案" class="headerlink" title="1 常见解决方案"></a>1 常见解决方案</h3><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202111272134851.png" alt="image-20211127213422699"></p>
+<ul>
+<li>MySQL TDE</li>
+<li>ShardingSphere Encrypt-JDBC</li>
+<li>ORM Interceptor(MyBatis)</li>
+</ul>
+<h3 id="2-ShardingSphere-Encrypt-JDBC"><a href="#2-ShardingSphere-Encrypt-JDBC" class="headerlink" title="2 ShardingSphere Encrypt-JDBC"></a>2 ShardingSphere Encrypt-JDBC</h3><h4 id="2-1-Encrypt-JDBC介绍"><a href="#2-1-Encrypt-JDBC介绍" class="headerlink" title="2.1 Encrypt-JDBC介绍"></a>2.1 Encrypt-JDBC介绍</h4><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202111272100434.png" alt="image-20211127210008191"></p>
+<p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202111272100432.png" alt="image-20211127210028264"></p>
+<p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202111272100803.png" alt="image-20211127210052609"></p>
+<p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202111272102471.png" alt="image-20211127210213347"></p>
+<p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202111272102262.png" alt="image-20211127210252091"></p>
+<p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202111272103197.png" alt="image-20211127210330049"></p>
+<p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202111272103428.png" alt="image-20211127210341238"></p>
+<h3 id="3-数据加密实践"><a href="#3-数据加密实践" class="headerlink" title="3 数据加密实践"></a>3 数据加密实践</h3><h4 id="3-1整体流程"><a href="#3-1整体流程" class="headerlink" title="3.1整体流程"></a>3.1整体流程</h4><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202111272106195.png" alt="image-20211127210527524"></p>
+<h4 id="3-2实现方式和配置"><a href="#3-2实现方式和配置" class="headerlink" title="3.2实现方式和配置"></a>3.2实现方式和配置</h4><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202111272104152.png" alt="image-20211127210415960"></p>
+<p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202111272105915.png" alt="image-20211127210508756"></p>
+<h4 id="3-3数据加密配置"><a href="#3-3数据加密配置" class="headerlink" title="3.3数据加密配置"></a>3.3数据加密配置</h4><pre class=" language-lang-yaml"><code class="language-lang-yaml"> # 数据脱敏规则配置---start
+      encrypt-rule:
+          encryptors:
+            encryptor_aes:
+              # 加密、解密器的名字，内置的为MD5，aes.
+              # 可以自定义，实现
+              # org.apache.shardingsphere.encrypt.strategy.spi.Encryptor
+              # 或者
+              # org.apache.shardingsphere.encrypt.strategy.spi.QueryAssistedEncryptor
+              # 这两个接口即可
+              type: aes
+              props:
+                aes.key.value: 123456abc
+          tables:
+            # 数据库，对应上面分片的tables
+             user:
+              columns:
+                # 逻辑列,就是写SQL里面的列，因为实体类的名字和数据库的加密列一致，所以这里都是name
+                name:
+                  # 密文列，用来存储密文数据
+                  cipherColumn: name
+                  # 加密器名字
+                  encryptor: encryptor_aes
+      # 数据脱敏规则配置---end
+</code></pre>
+<h4 id="3-4洗数操作"><a href="#3-4洗数操作" class="headerlink" title="3.4洗数操作"></a>3.4洗数操作</h4><pre class=" language-lang-java"><code class="language-lang-java">public class EncryptionController {
+
+  @Data
+  public static class Info {
+    // 数据库表名
+    public String tableName;
+    // 主键名  
+    public String primaryKeyName;
+    // 数据（列名 --> 值）  
+    public Map<String, String> map;
+  }
+
+  private JdbcTemplate jdbcTemplate  = new JdbcTemplate();
+
+  public void handlePlainColumn(Info info) {
+    String tableName = info.tableName;
+    if (StringUtils.isBlank(tableName) || StringUtils.isBlank(info.primaryKeyName)) {
+      return;
+    }
+
+    // 主键id
+    String primaryKeyName = info.primaryKeyName;
+    // 映射关系
+    Map<String, String> columnMap = info.map;
+    // 拼接 选择的字段
+    StringJoiner fieldsJoiner = new StringJoiner(",");
+    // 添加主键，更新用
+    fieldsJoiner.add(primaryKeyName);
+    for (Entry<String, String> entry : info.map.entrySet()) {
+      fieldsJoiner.add(entry.getKey());
+    }
+    String fieldStatement = fieldsJoiner.toString();
+    // select k1,k2,k3 from tableName limit xxx offset xx;
+    String selectSql = "select %s from %s limit %d offset %d;";
+    // 分批更新,每批次100条
+    for (long pageIndex = 0; ; pageIndex++) {
+      int limit = 100;
+      long offset = pageIndex * limit;
+      // 获取数据 sql
+      String sql = String.format(selectSql, fieldStatement, tableName, limit, offset);
+      List<Map<String, String>> result =
+          jdbcTemplate.query(
+              sql,
+              (rs, i) -> {
+                Map<String, String> res = new HashMap<>();
+                for (String plainColumn : columnMap.keySet()) {
+                  String value = rs.getString(plainColumn);
+                  res.put(plainColumn, value);
+                }
+                // 获取主键
+                ResultSetMetaData metaData = rs.getMetaData();
+                // 拼接sql 主键都是放在首位
+                String primaryKeyType = metaData.getColumnTypeName(1);
+                if ("VARCHAR".equals(primaryKeyType)) {
+                  res.put(primaryKeyName, "'" + rs.getString(primaryKeyName) + "'");
+                } else {
+                  res.put(primaryKeyName, rs.getString(primaryKeyName));
+                }
+                return res;
+              });
+      // 结果empty break
+      if (CollectionUtils.isEmpty(result)) {
+        break;
+      }
+      // resut 数据库返回的结果
+      for (Map<String, String> resultData : result) {
+        StringJoiner updateFieldJoiner = new StringJoiner(",");
+        // 字段映射关系
+        for (Entry<String, String> entry : columnMap.entrySet()) {
+          // 数据库对应的值
+          String data = resultData.get(entry.getKey());
+          // 若数据库中对应的所需加密的字段为空则跳过
+          if (StringUtils.isBlank(data)) {
+            continue;
+          }
+          // 计算cipher cloumn
+          byte[] secretKey = DigestUtils.sha1("配置的密钥");
+          String encrypt = AesUtil.encrypt(secretKey, data);
+          updateFieldJoiner.add(entry.getValue() + "='" + encrypt + "'");
+        }
+        // 需要加密的字段，都没数据，则不执行update
+        if (updateFieldJoiner.length() == 0) {
+          continue;
+        }
+
+        // update %s set %s where %s
+        String upSql =
+            String.format(
+                "update %s set %s where %s",
+                tableName,
+                updateFieldJoiner.toString(),
+                primaryKeyName + "=" + resultData.get(primaryKeyName));
+        jdbcTemplate.update(upSql);
+      }
+    }
+  }
+}
+</code></pre>
+<h4 id="3-5遇到的一些问题"><a href="#3-5遇到的一些问题" class="headerlink" title="3.5遇到的一些问题"></a>3.5遇到的一些问题</h4><ul>
+<li><p>仅主表配置的加密信息⽣效，关联表配置的加密信息不⽣效</p>
+<ul>
+<li><p>解决⽅法：在主表配置⾥冗余关联表的加密配置</p>
+</li>
+<li><p>例如：</p>
+<pre class=" language-lang-sql"><code class="language-lang-sql">select a.telephone, b.email from TB_ORDER a left join TB_USER b on a.user_id=b.user_id where user_id=xxx;
+</code></pre>
+<p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202111272128530.png" alt="image-20211127212856478"></p>
+</li>
+</ul>
+</li>
+<li><p>不⽀持将⼦查询的结果作为join连接的表</p>
+<ul>
+<li><p>解决⽅案：修改sql</p>
+</li>
+<li><p>例如：</p>
+<pre class=" language-lang-sql"><code class="language-lang-sql">select a.* from (select * from TB_ORDER where status=4) a left join TB_USER b on a.user_id=b.user_id where user_id=xxx;
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-待改进的地方"><a href="#4-待改进的地方" class="headerlink" title="4 待改进的地方"></a>4 待改进的地方</h3><ul>
+<li>不⽀持SQL_CALC_FOUND_ROWS语法 </li>
+<li>不兼容多种数据类型，仅⽀持varchar类型</li>
+<li>新表存在需要加解密的字段</li>
+<li>不支持⽀持密钥轮换</li>
+</ul>
+<h3 id="感谢"><a href="#感谢" class="headerlink" title="感谢"></a>感谢</h3><p>该篇内容，大部分来源于我mentor的技术分享，非常感谢他的指导！</p>
+
             </div>
             <hr/>
 
@@ -865,7 +1054,7 @@
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            
+                            ShardingSphere数据加密实践引言数据加密是指对某些敏感信息通过加密规则进行数据的变形，实现敏感隐私数据的可靠保护。 涉及客户安全数据或者一些商业性敏感数据，如身份证号、手机号、卡号、客户号等个人信息按照相关部门规定，都需要进行数
                         
                     </div>
                     <div class="publish-info">
@@ -1206,7 +1395,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">52.6k</span>&nbsp;字
+                class="white-color">53.6k</span>&nbsp;字
             
             
             
