@@ -575,14 +575,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2021-08-05
+                    2021-08-06
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    421
+                    433
                 </div>
                 
 
@@ -627,7 +627,7 @@ public class extendThread extends Thread{
     }
 }
 </code></pre>
-<h3 id="2-2输出对比"><a href="#2-2输出对比" class="headerlink" title="2.2输出对比"></a>2.2输出对比</h3><p>start()是启动线程方法，线程启动后，不会马上执行，是由CPU调度执行的</p>
+<h3 id="2-2输出对比（start-VS-run）"><a href="#2-2输出对比（start-VS-run）" class="headerlink" title="2.2输出对比（start  VS  run）"></a>2.2输出对比（start  VS  run）</h3><p>start()是启动线程方法，线程启动后，不会马上执行，是由CPU调度执行的(执行过程不固定)</p>
 <p><img src="../images/%E3%80%90Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E3%80%91%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%88%9B%E5%BB%BA/image-20210804155224898.png" alt="调用Start()方法"></p>
 <p><img src="../images/%E3%80%90Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E3%80%91%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%88%9B%E5%BB%BA/image-20210804155412777.png" alt="调用run()方法"></p>
 <h3 id="2-3-run-和start-的区别"><a href="#2-3-run-和start-的区别" class="headerlink" title="2.3 run()和start()的区别"></a>2.3 run()和start()的区别</h3><p>看一手源码~</p>
@@ -636,7 +636,7 @@ public class extendThread extends Thread{
 <ul>
 <li>线程状态<strong>不等于0</strong>时，抛出<code>IllegalThreadStateException()</code>异常，这就是说<strong>线程状态等于0</strong>时，表示线程start方法没有执行，即<strong>一个线程的start方法只能执行一次，不能重复多次</strong>。</li>
 <li><strong>那么关键就是这个start0方法，它是由JVM实现，JVM去调用创建线程的方法，创建一个新的线程。所以Java线程调用start-&gt;start0方法，实际上是JVM调用JVM_StartThread方法，该方法最终要调用的是Java线程中的run()方法。</strong></li>
-<li>直接调用run()方法，则没创建新的线程，因此存在多线程抢占的问题，只会按程序顺序执行。</li>
+<li>直接调用run()方法，则没创建新的线程，因此不存在多线程抢占的问题，只会按程序顺序执行。</li>
 </ul>
 <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_33996921/article/details/106738629">终于搞懂线程的启动流程了_henry_2016的博客-CSDN博客</a></p>
 <h3 id="2-4拓展问题—mian-是怎么启动主线程的"><a href="#2-4拓展问题—mian-是怎么启动主线程的" class="headerlink" title="2.4拓展问题—mian()是怎么启动主线程的"></a>2.4拓展问题—mian()是怎么启动主线程的</h3><h2 id="3-实现接口Runnable"><a href="#3-实现接口Runnable" class="headerlink" title="3 实现接口Runnable"></a>3 实现接口Runnable</h2><h3 id="3-1-代码实现"><a href="#3-1-代码实现" class="headerlink" title="3.1 代码实现"></a>3.1 代码实现</h3><pre class=" language-lang-java"><code class="language-lang-java">public class implementRunnable implements Runnable{
@@ -972,8 +972,14 @@ new 代理类(new 主体类()).代理方法();
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            多线程执行与普通方法执行的区别
-进程(Process)和线程(Thread)
+                            [TOC]
+
+1 多线程执行与普通方法执行的区别
+2 进程(Process)和线程(Thread)
+3 主要问题
+如何在Java中使用多线程
+如何解决多线程带来的问题（线程安全，资源共享，死锁，线程通信等）
+
 
                         
                     </div>
@@ -1245,7 +1251,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">49.2k</span>&nbsp;字
+                class="white-color">52.6k</span>&nbsp;字
             
             
             

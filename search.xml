@@ -4,6 +4,232 @@
   
     
     <entry>
+      <title>【中间件】基于ShardingSphere的数据加密</title>
+      <link href="2021/11/27/zhong-jian-jian-ji-yu-shardingsphere-de-shu-ju-jia-mi/"/>
+      <url>2021/11/27/zhong-jian-jian-ji-yu-shardingsphere-de-shu-ju-jia-mi/</url>
+      
+        <content type="html"><![CDATA[]]></content>
+      
+      
+      <categories>
+          
+          <category> 项目实践 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Java </tag>
+            
+            <tag> 数据库 </tag>
+            
+            <tag> 中间件 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>【Maven】进阶学习</title>
+      <link href="2021/08/12/maven-jin-jie-xue-xi/"/>
+      <url>2021/08/12/maven-jin-jie-xue-xi/</url>
+      
+        <content type="html"><![CDATA[<h2 id="1-分模块开发与设计"><a href="#1-分模块开发与设计" class="headerlink" title="1 分模块开发与设计"></a>1 分模块开发与设计</h2><h3 id="1-1-不分模块-VS-分模块"><a href="#1-1-不分模块-VS-分模块" class="headerlink" title="1.1 不分模块 VS 分模块"></a>1.1 不分模块 VS 分模块</h3><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108120857043.png" alt="image-20210812085739849"></p><h3 id="1-2-模块拆分示例"><a href="#1-2-模块拆分示例" class="headerlink" title="1.2 模块拆分示例"></a>1.2 模块拆分示例</h3><ol><li><p>拆分pojo层(普通Java对象)</p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108120917343.png" alt="image-20210812091702131" style="zoom:80%;"></p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108120920424.png" alt="image-20210812092048179"></p></li><li><p>拆分dao层（设计跨模块调用，重点）</p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108120938295.png" alt="image-20210812093842039"></p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108121012824.png" alt="image-20210812101221614"></p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108120943001.png" alt=""></p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108121009817.png" alt="image-20210812100940602"></p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108121017613.png" alt="image-20210812101735439"></p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108121010424.png" alt="image-20210812101056285"></p></li><li><p>拆分service层（设计跨模块调用，重点）</p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108121023343.png" alt=""></p><p>注意：修改了配置文件名，applicationContext-service.xml后，程序中调用和导入需要对应修改名字</p></li><li><p>拆分control层（整体和前面雷同）</p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108121023343.png" alt="image-20210812102308191"></p></li></ol><h3 id="1-3-模块拆分总结"><a href="#1-3-模块拆分总结" class="headerlink" title="1.3 模块拆分总结"></a>1.3 模块拆分总结</h3><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108121024631.png" alt="image-20210812102434563"></p><h2 id="2-聚合"><a href="#2-聚合" class="headerlink" title="2 聚合"></a>2 聚合</h2><p>作用：聚合用于快速构建Maven工程，一次性构建多个项目/模块。<br>制作方式：创建一个空模块，打包类型定义为pom</p><pre class=" language-lang-xml"><code class="language-lang-xml"><packaging>pom</packaging></code></pre><p>定义当前模块进行构建操作时关联的其他模块名称</p><pre class=" language-lang-xml"><code class="language-lang-xml"><modules>  <module>模块地址</module>  <module>模块地址</module>  <module>模块地址</module>  <module>模块地址</module></modules></code></pre><p>注意：参与聚合操作的模块最终执行顺序与模块间的依赖关系有关，与配置顺序无关</p><h2 id="3-继承"><a href="#3-继承" class="headerlink" title="3 继承"></a>3 继承</h2><p>作用：通过继承可以实现在子工程中沿用父工程中的配置（与Java类似）<br>制作方式：在子工程中生命其父工程坐标与对应的位置</p><pre class=" language-lang-xml"><code class="language-lang-xml"><!--定义该工程的父工程--><parent>  <groupId></groupId>  <artifactId></artifactId>  <version></version>  <!--填写父工程的pom文件-->  <relativePath>父工程pom文件地址</relativePath></parent></code></pre><p>在父工程中定义依赖管理</p><pre class=" language-lang-xml"><code class="language-lang-xml"><!--声明此处进行依赖管理--><dependencyManagement>  <!--具体的依赖-->  <dependencies>    <dependency>      <groupId></groupId>      <artifactId></artifactId>      <version></version>    </dependency>  </dependencies></dependencyManagement></code></pre><p>继承依赖使用：在子工程中定义依赖关系，无需声明依赖版本，版本参照父工程中依赖的版本</p><pre class=" language-lang-xml"><code class="language-lang-xml"><!--子工程中定义依赖关系--><dependencies>  <dependency>    <groupId></groupId>    <artifactId></artifactId>  </dependency></dependencies></code></pre><p>继承VS聚合<br>作用：聚合用于快速构建项目，继承用于快速配置<br>相同点：<br>聚合与继承的pom.xml文件打包方式均为pom，可以将两种关系制作到同一个pom文件中<br>聚合与继承均属于设计型模块，并无实际的模块内容<br>不同点：聚合是在当前模块中配置关系，聚合可以感知到参与聚合的模块有哪些<br>继承是在子模块中配置关系，父模块无法感知哪些子模块继承了自己</p><h2 id="4-属性"><a href="#4-属性" class="headerlink" title="4 属性"></a>4 属性</h2><h3 id="4-1-自定义属性"><a href="#4-1-自定义属性" class="headerlink" title="4.1 自定义属性"></a>4.1 自定义属性</h3><p>作用：等同于定义变量，方便统一维护<br>定义格式：</p><pre class=" language-lang-xml"><code class="language-lang-xml"><!--定义自定义属性--><properties>   <spring.version>5.1.9.RELEASE</spring.version>    <junit.version>4.12</junit.version></properties></code></pre><p>调用格式：</p><pre class=" language-lang-xml"><code class="language-lang-xml"><dependency>   <groupId>org.springframework</groupId>   <artifactId>spring-context</artifactId>   <version>${spring.version}</version></dependency></code></pre><h3 id="4-2-内置属性"><a href="#4-2-内置属性" class="headerlink" title="4.2 内置属性"></a>4.2 内置属性</h3><p>作用：使用Maven内置属性，快速配置<br>调用格式：</p><pre class=" language-lang-xml"><code class="language-lang-xml">${basedir}${version}</code></pre><p>Settin属性</p><p>作用：使用Maven配置文件setting.xml中的标签属性，用于动态配置<br>调用格式：</p><pre class=" language-lang-xml"><code class="language-lang-xml">${settings.localRepository}</code></pre><p>Java统属性</p><p>作用：读取Java系统属性<br>调用格式：</p><pre class=" language-lang-xml"><code class="language-lang-xml">${user.home}</code></pre><p>系统属性查询方式：</p><pre class=" language-lang-xml"><code class="language-lang-xml">mvn help:system</code></pre><p>环境变量属性</p><p>作用：使用Maven配置文件setting.xml中的标签属性，用于动态配置<br>调用格式：</p><pre class=" language-lang-xml"><code class="language-lang-xml">${env.JAVA_HOME}</code></pre><p>环境变量属性查询方式：</p><pre class=" language-lang-xml"><code class="language-lang-xml">mvn help:system</code></pre><h2 id="5-私服"><a href="#5-私服" class="headerlink" title="5 私服"></a>5 私服</h2><p>参考Nexus的操作</p><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://www.bilibili.com/video/BV1Ah411S7ZE">黑马程序员Maven全套教程，Maven项目管理从基础到高级，Java项目开发必会管理工具Maven_哔哩哔哩_bilibili</a></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Maven </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>【Postman】从入门到精通</title>
+      <link href="2021/08/11/postman-cong-ru-men-dao-jing-tong/"/>
+      <url>2021/08/11/postman-cong-ru-men-dao-jing-tong/</url>
+      
+        <content type="html"><![CDATA[<h2 id="1-前言"><a href="#1-前言" class="headerlink" title="1 前言"></a>1 前言</h2><h3 id="1-1-什么是接口"><a href="#1-1-什么是接口" class="headerlink" title="1.1 什么是接口"></a>1.1 什么是接口</h3><p>硬件层面：如USB，HDMI等</p><p>软件层面：统称API，如微信提供的支付接口，百度地图提供的地图接口</p><p>接口分类：内部接口和外部接口</p><ul><li>内部接口：对自身系统提供的接口</li><li>外部接口： 提供给外部调用的接口</li></ul><p>总结：在软件层面，接口就是软件给外部提供的一种服务，用于数据传输</p><h3 id="1-2-软件为什么需要接口"><a href="#1-2-软件为什么需要接口" class="headerlink" title="1.2 软件为什么需要接口"></a>1.2 软件为什么需要接口</h3><p>给外部提供服务，给外部能够操作内部数据的权限</p><h3 id="1-3-接口测试"><a href="#1-3-接口测试" class="headerlink" title="1.3 接口测试"></a>1.3 接口测试</h3><p>开发前后端分离，开发进度不一样，通过接口测试可以不必等到最后软件开发完成再进行测试</p><h3 id="1-4-接口测试本质"><a href="#1-4-接口测试本质" class="headerlink" title="1.4 接口测试本质"></a>1.4 接口测试本质</h3><p>测试接口能否正常的交付数据，权限控制，以及异常处理</p><h2 id="2-接口返回的数据格式"><a href="#2-接口返回的数据格式" class="headerlink" title="2 接口返回的数据格式"></a>2 接口返回的数据格式</h2><h3 id="2-1-Json格式"><a href="#2-1-Json格式" class="headerlink" title="2.1 Json格式"></a>2.1 Json格式</h3><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108111117812.png" alt="image-20210811111729692"></p><h3 id="2-2-HTML格式"><a href="#2-2-HTML格式" class="headerlink" title="2.2 HTML格式"></a>2.2 HTML格式</h3><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108111117124.png" alt="image-20210811111752083"></p><h3 id="2-3Xml格式"><a href="#2-3Xml格式" class="headerlink" title="2.3Xml格式"></a>2.3Xml格式</h3><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108111118125.png" alt="image-20210811111827081"></p><h2 id="3-接口测试协议"><a href="#3-接口测试协议" class="headerlink" title="3 接口测试协议"></a>3 接口测试协议</h2><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108111126703.png" alt="image-20210811112633552"></p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108111130054.png" alt="image-20210811113047919"></p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108111132744.png" alt="image-20210811113224610"></p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108111231011.png" alt="image-20210811123144923"></p><h2 id="4-postman介绍"><a href="#4-postman介绍" class="headerlink" title="4 postman介绍"></a>4 postman介绍</h2><h3 id="4-1-postman界面介绍"><a href="#4-1-postman界面介绍" class="headerlink" title="4.1 postman界面介绍"></a>4.1 postman界面介绍</h3><p>需要提前注册登录，未登录状态的测试用例不能保存</p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108111422984.png" alt="image-20210811142254744"></p><h3 id="4-2-新建请求"><a href="#4-2-新建请求" class="headerlink" title="4.2 新建请求"></a>4.2 新建请求</h3><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108111444725.png" alt="image-20210811144429485"></p><ol><li>请求设置参数介绍：<ul><li>参数（Params）：用于在get请求传参</li><li>授权：postman自带的鉴权功能</li><li>Header：请求头</li><li>Body：post请求传参<ul><li>none：没有参数</li><li>form-da’ta：既有文件又有键值对</li><li>x-www-form-urlencoded：只传输键值对</li><li>raw：支持传Json，txt，HTML，xml，js等</li><li>binary：传二进制文件</li></ul></li><li>Cookie：postman的cookie管理器</li><li>&lt;/&gt;(发送按钮旁边)：自动化接口请求脚本生成器</li></ul></li><li>响应结果参数介绍：<ul><li>Body：返回的数据（可以设置展示格式）</li><li>cookie：返回的cookie信息</li><li>Headers：响应头</li><li>TestResult：断言结果</li><li>状态码</li><li>响应时间</li><li>返回数据大小</li></ul></li></ol>]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Postman </tag>
+            
+            <tag> 接口 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>【Maven】入门介绍</title>
+      <link href="2021/08/09/maven-ru-men-jie-shao/"/>
+      <url>2021/08/09/maven-ru-men-jie-shao/</url>
+      
+        <content type="html"><![CDATA[<h2 id="1-为什么会出现Maven"><a href="#1-为什么会出现Maven" class="headerlink" title="1 为什么会出现Maven"></a>1 为什么会出现Maven</h2><ul><li>jar包不统一，jar包不兼容</li><li>跨平台工程发布，维护困难</li><li>一个项目就是一个工程，这时我们只能以package来划分不通的模块。（导致所有模块的jar包）</li><li>手动拷贝jar包到lib目录下，不仅使得项目臃肿，还浪费存储空间。</li><li>假如一个jar包引用的另一个jar包，这种jar包直接的依赖关系很难搞清楚。</li></ul><p>以上诸多问题，需要一个”大哥”来管理，于是就出现了Maven大哥。</p><h2 id="2-Maven是什么"><a href="#2-Maven是什么" class="headerlink" title="2 Maven是什么"></a>2 Maven是什么</h2><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108111742792.png" alt="image-20210811174214650"></p><h2 id="3-利用IDEA构建Maven项目"><a href="#3-利用IDEA构建Maven项目" class="headerlink" title="3 利用IDEA构建Maven项目"></a>3 利用IDEA构建Maven项目</h2><h3 id="3-1-手动构建（方法1）"><a href="#3-1-手动构建（方法1）" class="headerlink" title="3.1 手动构建（方法1）"></a>3.1 手动构建（方法1）</h3><ol><li><p>创建空项目</p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108111800475.png" alt="image-20210811180025320"></p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108111814646.png" alt="image-20210811181417522"></p></li><li><p>配置Maven</p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108111819369.png" alt="image-20210811181912191"></p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108111820413.png" alt="image-20210811182000176"></p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108111852766.png" alt="image-20210811185202626"></p></li><li><p>创建Maven工程</p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108111853056.png" alt="image-20210811185336828"></p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108111855361.png" alt="image-20210811185509234"></p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108111855241.png" alt="image-20210811185549090"></p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108111856655.png" alt="image-20210811185657517"></p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108111900041.png" alt="image-20210811190053892"></p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108111902837.png" alt="image-20210811190208683"></p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108111902789.png" alt="image-20210811190256638"></p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108111903491.png" alt="image-20210811190353336"></p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108111904509.png" alt="image-20210811190420355"></p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108111906405.png" alt="image-20210811190638177"></p></li></ol><h3 id="3-2-使用IDEA模板构建（方法二）"><a href="#3-2-使用IDEA模板构建（方法二）" class="headerlink" title="3.2 使用IDEA模板构建（方法二）"></a>3.2 使用IDEA模板构建（方法二）</h3><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108112048184.png" alt="image-20210811204856957"></p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108112051007.png" alt="image-20210811205144835"></p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108112053473.png" alt="image-20210811205316336"></p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108112055810.png" alt="image-20210811205533688"></p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108112056783.png" alt="image-20210811205658651"></p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108112100607.png" alt="image-20210811210056368"></p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108112102291.png" alt="image-20210811210213198"></p><h3 id="3-3-使用Maven构建Web工程"><a href="#3-3-使用Maven构建Web工程" class="headerlink" title="3.3 使用Maven构建Web工程"></a>3.3 使用Maven构建Web工程</h3><p>前面的步骤就不再赘述，直接新建一个工程</p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108112110291.png" alt="image-20210811211023161"></p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108112111690.png" alt="image-20210811211156575"></p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108112112912.png" alt="image-20210811211225801"></p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108112114656.png" alt="image-20210811211450419"></p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108112116395.png" alt="image-20210811211622158"></p><h2 id="4-Maven项目的使用"><a href="#4-Maven项目的使用" class="headerlink" title="4 Maven项目的使用"></a>4 Maven项目的使用</h2><h3 id="4-1依赖配置"><a href="#4-1依赖配置" class="headerlink" title="4.1依赖配置"></a>4.1依赖配置</h3><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108112040576.png" alt="image-20210811204012332"></p><p>安装tomcat服务器，即可启动web工程</p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108122131736.png" alt="image-20210812213156476"></p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108122133730.png" alt="image-20210812213325583"></p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108122135151.png" alt="image-20210812213525989"></p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108122144104.png" alt="image-20210812213822518"></p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108122139083.png" alt="image-20210812213956928"></p><p>配置servlet的jar包（可以导入本地的，也可以通过Maven下载远程仓库的，下面介绍后者，推荐！！！）</p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108122149173.png" alt="image-20210812214910008"></p><h3 id="4-2-配置运行环境"><a href="#4-2-配置运行环境" class="headerlink" title="4.2 配置运行环境"></a>4.2 配置运行环境</h3><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108112045469.png" alt="image-20210811204530330"></p><h2 id="5-Maven依赖管理"><a href="#5-Maven依赖管理" class="headerlink" title="5 Maven依赖管理"></a>5 Maven依赖管理</h2><h3 id="5-1-依赖范围"><a href="#5-1-依赖范围" class="headerlink" title="5.1 依赖范围"></a>5.1 依赖范围</h3><p>Maven在编译、测试、运行(含打包)阶段中所需的依赖并不完全一致，所以Maven通过三种不同的classpath实现在不同阶段引入所需的依赖：编译classpath、测试classpath、运行classpath</p><p>依赖范围：控制依赖与三种classpath的关系。可在POM文件的依赖元素dependency中的scope元素中进行配置，缺省值 compile</p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108112123544.png" alt="image-20210811212357492"></p><p>常见的依赖范围有：</p><ul><li><strong>compile</strong> : 编译依赖范围，scope元素的缺省值。使用此依赖范围的Maven依赖，对于三种classpath均有效，即该Maven依赖在上述三种classpath均会被引入。例如，Spring框架的核心依赖在编译、测试、运行过程都是必须的</li><li><strong>test</strong> : 测试依赖范围。使用此依赖范围的Maven依赖，只对测试classpath有效。例如，Junit依赖只有在测试阶段才需要</li><li><strong>provided</strong> : 已提供依赖范围。使用此依赖范围的Maven依赖，只对编译classpath、测试classpath有效。例如，servlet-api依赖对于编译、测试阶段而言是需要的，但是运行阶段，由于外部容器已经提供，故不需要Maven重复引入该依赖</li><li><strong>runtime</strong> : 运行时依赖范围。使用此依赖范围的Maven依赖，只对测试classpath、运行classpath有效。例如，JDBC驱动实现依赖，其在编译时只需JDK提供的JDBC接口即可，只有测试、运行阶段才需要实现了JDBC接口的驱动</li><li><strong>system</strong> : 系统依赖范围，其效果与provided的依赖范围一致。其用于添加非Maven仓库的本地依赖，通过依赖元素dependency中的systemPath元素指定本地依赖的路径。鉴于使用其会导致项目的可移植性降低，一般不推荐使用</li><li><strong>import</strong> ：导入依赖范围。其不会对上述三种classpath造成任何实际影响</li></ul><h3 id="5-2-依赖传递"><a href="#5-2-依赖传递" class="headerlink" title="5.2 依赖传递"></a>5.2 依赖传递</h3><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108112126148.png" alt="image-20210811212612092"></p><p>可选依赖不会传递，当某个间接依赖是可选依赖时，无论依赖范围是什么，其都不会因为传递性依赖机制而被引入</p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108112129268.png" alt="image-20210811212926167"></p><h3 id="5-3-依赖调解"><a href="#5-3-依赖调解" class="headerlink" title="5.3 依赖调解"></a>5.3 依赖调解</h3><ul><li><p>第一原则: 路径最短者优先</p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108112132877.png" alt="image-20210811213222813"></p></li><li><p>第二原则: 第一声明者优先</p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108112132495.png" alt="image-20210811213233437"></p></li></ul><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://www.bilibili.com/video/BV1Ah411S7ZE">黑马程序员Maven全套教程，Maven项目管理从基础到高级，Java项目开发必会管理工具Maven_哔哩哔哩_bilibili</a></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Maven </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>【Java线程10】线程池</title>
+      <link href="2021/08/07/java-xian-cheng-10-xian-cheng-chi/"/>
+      <url>2021/08/07/java-xian-cheng-10-xian-cheng-chi/</url>
+      
+        <content type="html"><![CDATA[]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>【Java线程9】线程通信</title>
+      <link href="2021/08/07/java-xian-cheng-9-xian-cheng-tong-xin/"/>
+      <url>2021/08/07/java-xian-cheng-9-xian-cheng-tong-xin/</url>
+      
+        <content type="html"><![CDATA[<h2 id="1-一个小问题"><a href="#1-一个小问题" class="headerlink" title="1 一个小问题"></a>1 一个小问题</h2><p>以前了解线程同步，每个线程都似乎是各自完成各自的事情，对其他线程的情况是不了解的。最多就是通过加锁操作，能够<strong>间接通知</strong>其他线程或者间接感知其他线程，其共享变量正在被操作。</p><p>那如何实现线程之间的<strong>直接通信</strong>这个需求呢？如下图</p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108071622683.jpg" alt="线程通信实例"></p><p>只有生产线程，生产好了一杯奶茶，消费线程才能消费，那么就有几个问题了</p><p>消费线程：那我到底什么时候消费呢？？？或者我怎么知道生产线程已经生产好了？？</p><p>因此，就都归为最终问题，生产线程怎么通知消费线程已经生产好，即<strong>线程通信</strong>！！！</p><h2 id="2-实现方式"><a href="#2-实现方式" class="headerlink" title="2 实现方式"></a>2 实现方式</h2><p>要实现线程通信，那就需要用到Object类中的wait(),notify(),notifyAll()方法</p><div class="table-container"><table><thead><tr><th style="text-align:center">方法</th><th style="text-align:center">功能</th></tr></thead><tbody><tr><td style="text-align:center">wait()</td><td style="text-align:center">导致当前线程等待，直到另一个线程调用此对象的<a href="../../java/lang/Object.html#notify--"><code>notify()</code></a>方法或<a href="../../java/lang/Object.html#notifyAll--"><code>notifyAll()</code></a>方法，或指定的时间已过。与Thread.sleep()不同，他会释放当前线程的锁</td></tr><tr><td style="text-align:center">notify()</td><td style="text-align:center">任意唤醒正在等待对象监视器的单个线程（将任意一个<strong>等待池</strong>中的线程进入到<strong>锁池</strong>）</td></tr><tr><td style="text-align:center">notifyAll()</td><td style="text-align:center">唤醒正在等待对象监视器的所有线程（将所有<strong>等待池</strong>中的线程进入到<strong>锁池</strong>）</td></tr></tbody></table></div><h3 id="2-1标志位法"><a href="#2-1标志位法" class="headerlink" title="2.1标志位法"></a>2.1标志位法</h3><h3 id="2-2管道法"><a href="#2-2管道法" class="headerlink" title="2.2管道法"></a>2.2管道法</h3>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>【Java线程8】Lock介绍</title>
+      <link href="2021/08/07/java-xian-cheng-8-lock-jie-shao/"/>
+      <url>2021/08/07/java-xian-cheng-8-lock-jie-shao/</url>
+      
+        <content type="html"><![CDATA[<h2 id="1-介绍"><a href="#1-介绍" class="headerlink" title="1 介绍"></a>1 介绍</h2><p>JDK提供显示定义<strong>同步锁对象</strong>来实现线程同步。</p><p>java.util.concurrent.locks.Lock接口是控制多个线程对共享资源进行访问的工具</p><p>每次只能有一个线程对Lock对象加锁，加锁前应先获得Lock对象</p><p><strong>ReentrantLock</strong>（可重入锁）实现了接口Lock，拥有与synchronized相同的并发性</p><h2 id="2-具体实现"><a href="#2-具体实现" class="headerlink" title="2 具体实现"></a>2 具体实现</h2><pre class=" language-lang-java"><code class="language-lang-java">import java.util.concurrent.locks.ReentrantLock;public class TestLock {    public static void main(String[] args) {        LockPrint lockPrint = new LockPrint();        new Thread(lockPrint,"AA").start();        new Thread(lockPrint, "BB").start();        new Thread(lockPrint, "CC").start();    }}class LockPrint implements  Runnable{    private int num = 10;    //第一步：获得可重入锁对象    ReentrantLock lock = new ReentrantLock();    @Override    public void run() {        while (true){            try {                //第二步：加锁                lock.lock();                if (num > 0){                    Thread.sleep(10);                    System.out.println(Thread.currentThread().getName()+"----"+num--);                }else{                    break;                }            } catch (InterruptedException e) {                e.printStackTrace();            }finally {                //第三步：解锁                lock.unlock();            }        }    }}</code></pre><p>如果有异常处理代码，则解锁代码一般建议放在finally语句块中</p><p>synchronized是隐式锁，自动释放锁；Lock是显示锁，需要手动释放锁</p><p>synchronized有代码块锁和方法锁，Lock只有代码块锁，性能更好</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Java </tag>
+            
+            <tag> 线程 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>【Java线程7】synchronized介绍</title>
+      <link href="2021/08/07/java-xian-cheng-7-synchronized-jie-shao/"/>
+      <url>2021/08/07/java-xian-cheng-7-synchronized-jie-shao/</url>
+      
+        <content type="html"><![CDATA[]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>【Java线程6】线程同步</title>
+      <link href="2021/08/06/java-xian-cheng-6-xian-cheng-tong-bu/"/>
+      <url>2021/08/06/java-xian-cheng-6-xian-cheng-tong-bu/</url>
+      
+        <content type="html"><![CDATA[<p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108071004292.png" alt="image-20210807100450058"></p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/image-20210806201143323.png" alt="image-20210806201143323"></p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/image-20210806201437350.png" alt="image-20210806201437350"></p><h2 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h2><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p><strong>两个线程都在等待对方释放锁</strong>，在没有外力的作用下，这些线程会一直相互等待，就没办法继续运行，这种情况就是发生了<strong>死锁</strong>。</p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/202108071119265.jpg" alt="线程死锁"></p><h3 id="死锁的四个条件"><a href="#死锁的四个条件" class="headerlink" title="死锁的四个条件"></a>死锁的四个条件</h3><ul><li>互斥条件：线程(进程)对于所分配到的资源具有排它性，即一个资源只能被一个线程(进程)占用，直到被该线程(进程)释放</li><li>请求与保持条件：一个线程(进程)因请求被占用资源而发生阻塞时，对已获得的资源保持不放。</li><li>不剥夺条件：线程(进程)已获得的资源在末使用完之前不能被其他线程强行剥夺，只有自己使用完毕后才释放资源。</li><li>循环等待条件：当发生死锁时，所等待的线程(进程)必定会形成一个环路（类似于死循环），造成永久阻塞</li></ul><h3 id="死锁实例"><a href="#死锁实例" class="headerlink" title="死锁实例"></a>死锁实例</h3><pre class=" language-lang-java"><code class="language-lang-java">//实例1public class DeadLock {    public static final String LOCK_1 = "lock1";    public static final String LOCK_2 = "lock2";    public static void main(String[] args) {        Thread threadA = new Thread(() -> {            synchronized (DeadLock.LOCK_1){                System.out.println(Thread.currentThread().getName() + "锁住LOCK_1，准备请求LOCK_2");                //休眠一会                try {                    Thread.sleep(1000);                } catch (InterruptedException e) {                    e.printStackTrace();                }                synchronized (DeadLock.LOCK_2){                    System.out.println(Thread.currentThread().getName() + "锁住LOCK_2");                }            }        });        Thread threadB = new Thread(() ->{            synchronized (DeadLock.LOCK_2){                System.out.println(Thread.currentThread().getName()+"锁住LOCK_2，准备请求LOCK_1");                try {                    Thread.sleep(1000);                } catch (InterruptedException e) {                    e.printStackTrace();                }                synchronized (DeadLock.LOCK_1){                    System.out.println(Thread.currentThread().getName()+"锁住LOCK_1");                }            }        });        threadA.start();        threadB.start();    }}</code></pre><pre class=" language-lang-java"><code class="language-lang-java">//实例2public class DeadLock {    public static void main(String[] args) {        //生成资源//        resour1 r1 = new resour1();//        resour2 r2 = new resour2();        doSomeThing t = new doSomeThing(0);        t.setName("小花");        doSomeThing t1 = new doSomeThing(1);        t1.setName("小明");        //启动        t1.start();        t.start();    }}//资源1class resour1{ }//资源2class resour2{ }class doSomeThing extends Thread{    static resour1 r1 = new resour1();    static resour2 r2 = new resour2();    //注意这里的target不能用静态修饰，他只有一份的话，那就没法区分不同线程，从而不会抢占资源了    int target;    public doSomeThing( int target){        this.target = target;    }    @Override    public void run() {        try {            Do();        } catch (InterruptedException e) {            e.printStackTrace();        }    }    public void Do() throws InterruptedException {        if (target == 0){            synchronized (doSomeThing.r1){                System.out.println(Thread.currentThread().getName()+"获得r1的锁！！");                //睡眠不释放锁                Thread.sleep(1000);                synchronized (doSomeThing.r2){                    System.out.println(Thread.currentThread().getName()+"获得r2的锁！！");                }            }        }else {            synchronized (doSomeThing.r2){                System.out.println(Thread.currentThread().getName()+"获得r2的锁！！");                //睡眠不释放锁                Thread.sleep(1000);                synchronized (doSomeThing.r1){                    System.out.println(Thread.currentThread().getName()+"获得r1的锁！！");                }            }        }    }}</code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> 学习笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Java </tag>
+            
+            <tag> 线程同步 </tag>
+            
+            <tag> 线程 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>【Visio】如何导出为高清图片</title>
+      <link href="2021/08/06/visio-ru-he-dao-chu-wei-gao-qing-tu-pian/"/>
+      <url>2021/08/06/visio-ru-he-dao-chu-wei-gao-qing-tu-pian/</url>
+      
+        <content type="html"><![CDATA[<h3 id="第一步：绘制-amp-另存"><a href="#第一步：绘制-amp-另存" class="headerlink" title="第一步：绘制&amp;另存"></a>第一步：绘制&amp;另存</h3><p><img src="../images/%E3%80%90Visio%E3%80%91%E5%A6%82%E4%BD%95%E5%AF%BC%E5%87%BA%E4%B8%BA%E9%AB%98%E6%B8%85%E5%9B%BE%E7%89%87/image-20210806163631125.png" alt=""></p><p><img src="../images/%E3%80%90Visio%E3%80%91%E5%A6%82%E4%BD%95%E5%AF%BC%E5%87%BA%E4%B8%BA%E9%AB%98%E6%B8%85%E5%9B%BE%E7%89%87/image-20210806163805613.png" alt=""></p><h3 id="第二步：修改格式"><a href="#第二步：修改格式" class="headerlink" title="第二步：修改格式"></a>第二步：修改格式</h3><p><img src="../images/%E3%80%90Visio%E3%80%91%E5%A6%82%E4%BD%95%E5%AF%BC%E5%87%BA%E4%B8%BA%E9%AB%98%E6%B8%85%E5%9B%BE%E7%89%87/image-20210806163939221.png" alt=""></p><h3 id="第三步：设置输出选项（重要）"><a href="#第三步：设置输出选项（重要）" class="headerlink" title="第三步：设置输出选项（重要）"></a>第三步：设置输出选项（重要）</h3><p><img src="../images/%E3%80%90Visio%E3%80%91%E5%A6%82%E4%BD%95%E5%AF%BC%E5%87%BA%E4%B8%BA%E9%AB%98%E6%B8%85%E5%9B%BE%E7%89%87/image-20210806164115954.png" alt=""></p><h3 id="高清图片导出完毕！！！！"><a href="#高清图片导出完毕！！！！" class="headerlink" title="高清图片导出完毕！！！！"></a>高清图片导出完毕！！！！</h3><p><img src="C:/Users/MingWang/AppData/Roaming/Typora/typora-user-images/image-20210806170354233.png" alt="image-20210806170354233"></p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/image-20210806182235538.png" alt="image-20210806182235538"></p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/image-20210806182255947.png" alt="image-20210806182255947"></p><p><img src="https://gitee.com/songmingwang/blog-image/raw/master/img/image-20210806182336453.png" alt="image-20210806182336453"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 操作教程 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Visio </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>【Java线程4】线程同步</title>
       <link href="2021/08/05/java-xian-cheng-4-xian-cheng-tong-bu/"/>
       <url>2021/08/05/java-xian-cheng-4-xian-cheng-tong-bu/</url>
@@ -95,7 +321,7 @@
       <link href="2021/08/04/java-xian-cheng-2-xian-cheng-chuang-jian/"/>
       <url>2021/08/04/java-xian-cheng-2-xian-cheng-chuang-jian/</url>
       
-        <content type="html"><![CDATA[<h2 id="1-三种创建方法"><a href="#1-三种创建方法" class="headerlink" title="1 三种创建方法"></a>1 三种创建方法</h2><p><img src="../images/%E3%80%90Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E3%80%91%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%88%9B%E5%BB%BA/image-20210804153541108.png" alt="线程创建方法"></p><h2 id="2-继承Thread类"><a href="#2-继承Thread类" class="headerlink" title="2 继承Thread类"></a>2 继承Thread类</h2><h3 id="2-1代码实现"><a href="#2-1代码实现" class="headerlink" title="2.1代码实现"></a>2.1代码实现</h3><pre class=" language-lang-java"><code class="language-lang-java">/**创建线程类步骤 * 1、继承Thread * 2、重写run()方法 * 3、创建对象调用start()方法 */public class extendThread extends Thread{    @Override    public void run() {        for(int i = 0; i < 4; i++){            System.out.println("run()方法："+i);        }    }    public static void main(String[] args) {        extendThread thread = new extendThread();        //thread.run();        thread.start();        for(int i = 0; i < 5; i++){            System.out.println("main()方法：----"+i);        }    }}</code></pre><h3 id="2-2输出对比"><a href="#2-2输出对比" class="headerlink" title="2.2输出对比"></a>2.2输出对比</h3><p>start()是启动线程方法，线程启动后，不会马上执行，是由CPU调度执行的</p><p><img src="../images/%E3%80%90Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E3%80%91%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%88%9B%E5%BB%BA/image-20210804155224898.png" alt="调用Start()方法"></p><p><img src="../images/%E3%80%90Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E3%80%91%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%88%9B%E5%BB%BA/image-20210804155412777.png" alt="调用run()方法"></p><h3 id="2-3-run-和start-的区别"><a href="#2-3-run-和start-的区别" class="headerlink" title="2.3 run()和start()的区别"></a>2.3 run()和start()的区别</h3><p>看一手源码~</p><p><img src="../images/%E3%80%90Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E3%80%91%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%88%9B%E5%BB%BA/image-20210804211103105.png" alt="image-20210804211103105"></p><p>从源码得知：</p><ul><li>线程状态<strong>不等于0</strong>时，抛出<code>IllegalThreadStateException()</code>异常，这就是说<strong>线程状态等于0</strong>时，表示线程start方法没有执行，即<strong>一个线程的start方法只能执行一次，不能重复多次</strong>。</li><li><strong>那么关键就是这个start0方法，它是由JVM实现，JVM去调用创建线程的方法，创建一个新的线程。所以Java线程调用start-&gt;start0方法，实际上是JVM调用JVM_StartThread方法，该方法最终要调用的是Java线程中的run()方法。</strong></li><li>直接调用run()方法，则没创建新的线程，因此存在多线程抢占的问题，只会按程序顺序执行。</li></ul><p><a href="https://blog.csdn.net/qq_33996921/article/details/106738629">终于搞懂线程的启动流程了_henry_2016的博客-CSDN博客</a></p><h3 id="2-4拓展问题—mian-是怎么启动主线程的"><a href="#2-4拓展问题—mian-是怎么启动主线程的" class="headerlink" title="2.4拓展问题—mian()是怎么启动主线程的"></a>2.4拓展问题—mian()是怎么启动主线程的</h3><h2 id="3-实现接口Runnable"><a href="#3-实现接口Runnable" class="headerlink" title="3 实现接口Runnable"></a>3 实现接口Runnable</h2><h3 id="3-1-代码实现"><a href="#3-1-代码实现" class="headerlink" title="3.1 代码实现"></a>3.1 代码实现</h3><pre class=" language-lang-java"><code class="language-lang-java">public class implementRunnable implements Runnable{    @Override    public void run() {        for(int i = 0; i < 1000; i++){            System.out.println("run()方法："+i);        }    }    public static void main(String[] args) {        implementRunnable p = new implementRunnable();        Thread thread = new Thread(p);        thread.start();        for(int i = 0; i < 100; i++){            System.out.println(Thread.currentThread().getName()+i);        }    }}</code></pre><h2 id="4-实现callable接口"><a href="#4-实现callable接口" class="headerlink" title="4 实现callable接口"></a>4 实现callable接口</h2><p><img src="../images/%E3%80%90Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E3%80%91%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%88%9B%E5%BB%BA/image-20210805121931061.png" alt="image-20210805121931061"></p><h2 id="5-总结"><a href="#5-总结" class="headerlink" title="5 总结"></a>5 总结</h2><p><img src="../images/%E3%80%90Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E3%80%91%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%88%9B%E5%BB%BA/image-20210805104810084.png" alt="image-20210805104810084"></p>]]></content>
+        <content type="html"><![CDATA[<h2 id="1-三种创建方法"><a href="#1-三种创建方法" class="headerlink" title="1 三种创建方法"></a>1 三种创建方法</h2><p><img src="../images/%E3%80%90Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E3%80%91%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%88%9B%E5%BB%BA/image-20210804153541108.png" alt="线程创建方法"></p><h2 id="2-继承Thread类"><a href="#2-继承Thread类" class="headerlink" title="2 继承Thread类"></a>2 继承Thread类</h2><h3 id="2-1代码实现"><a href="#2-1代码实现" class="headerlink" title="2.1代码实现"></a>2.1代码实现</h3><pre class=" language-lang-java"><code class="language-lang-java">/**创建线程类步骤 * 1、继承Thread * 2、重写run()方法 * 3、创建对象调用start()方法 */public class extendThread extends Thread{    @Override    public void run() {        for(int i = 0; i < 4; i++){            System.out.println("run()方法："+i);        }    }    public static void main(String[] args) {        extendThread thread = new extendThread();        //thread.run();        thread.start();        for(int i = 0; i < 5; i++){            System.out.println("main()方法：----"+i);        }    }}</code></pre><h3 id="2-2输出对比（start-VS-run）"><a href="#2-2输出对比（start-VS-run）" class="headerlink" title="2.2输出对比（start  VS  run）"></a>2.2输出对比（start  VS  run）</h3><p>start()是启动线程方法，线程启动后，不会马上执行，是由CPU调度执行的(执行过程不固定)</p><p><img src="../images/%E3%80%90Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E3%80%91%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%88%9B%E5%BB%BA/image-20210804155224898.png" alt="调用Start()方法"></p><p><img src="../images/%E3%80%90Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E3%80%91%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%88%9B%E5%BB%BA/image-20210804155412777.png" alt="调用run()方法"></p><h3 id="2-3-run-和start-的区别"><a href="#2-3-run-和start-的区别" class="headerlink" title="2.3 run()和start()的区别"></a>2.3 run()和start()的区别</h3><p>看一手源码~</p><p><img src="../images/%E3%80%90Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E3%80%91%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%88%9B%E5%BB%BA/image-20210804211103105.png" alt="image-20210804211103105"></p><p>从源码得知：</p><ul><li>线程状态<strong>不等于0</strong>时，抛出<code>IllegalThreadStateException()</code>异常，这就是说<strong>线程状态等于0</strong>时，表示线程start方法没有执行，即<strong>一个线程的start方法只能执行一次，不能重复多次</strong>。</li><li><strong>那么关键就是这个start0方法，它是由JVM实现，JVM去调用创建线程的方法，创建一个新的线程。所以Java线程调用start-&gt;start0方法，实际上是JVM调用JVM_StartThread方法，该方法最终要调用的是Java线程中的run()方法。</strong></li><li>直接调用run()方法，则没创建新的线程，因此不存在多线程抢占的问题，只会按程序顺序执行。</li></ul><p><a href="https://blog.csdn.net/qq_33996921/article/details/106738629">终于搞懂线程的启动流程了_henry_2016的博客-CSDN博客</a></p><h3 id="2-4拓展问题—mian-是怎么启动主线程的"><a href="#2-4拓展问题—mian-是怎么启动主线程的" class="headerlink" title="2.4拓展问题—mian()是怎么启动主线程的"></a>2.4拓展问题—mian()是怎么启动主线程的</h3><h2 id="3-实现接口Runnable"><a href="#3-实现接口Runnable" class="headerlink" title="3 实现接口Runnable"></a>3 实现接口Runnable</h2><h3 id="3-1-代码实现"><a href="#3-1-代码实现" class="headerlink" title="3.1 代码实现"></a>3.1 代码实现</h3><pre class=" language-lang-java"><code class="language-lang-java">public class implementRunnable implements Runnable{    @Override    public void run() {        for(int i = 0; i < 1000; i++){            System.out.println("run()方法："+i);        }    }    public static void main(String[] args) {        implementRunnable p = new implementRunnable();        Thread thread = new Thread(p);        thread.start();        for(int i = 0; i < 100; i++){            System.out.println(Thread.currentThread().getName()+i);        }    }}</code></pre><h2 id="4-实现callable接口"><a href="#4-实现callable接口" class="headerlink" title="4 实现callable接口"></a>4 实现callable接口</h2><p><img src="../images/%E3%80%90Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E3%80%91%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%88%9B%E5%BB%BA/image-20210805121931061.png" alt="image-20210805121931061"></p><h2 id="5-总结"><a href="#5-总结" class="headerlink" title="5 总结"></a>5 总结</h2><p><img src="../images/%E3%80%90Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E3%80%91%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%88%9B%E5%BB%BA/image-20210805104810084.png" alt="image-20210805104810084"></p>]]></content>
       
       
       <categories>
@@ -122,7 +348,7 @@
       <link href="2021/08/04/java-xian-cheng-1-ru-men-ji-chu/"/>
       <url>2021/08/04/java-xian-cheng-1-ru-men-ji-chu/</url>
       
-        <content type="html"><![CDATA[<h2 id="多线程执行与普通方法执行的区别"><a href="#多线程执行与普通方法执行的区别" class="headerlink" title="多线程执行与普通方法执行的区别"></a>多线程执行与普通方法执行的区别</h2><p><img src="../images/%E3%80%90Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E3%80%91%E5%85%A5%E9%97%A8%E5%9F%BA%E7%A1%80/image-20210804152023280.png" alt="image-20210804152023280"></p><h2 id="进程-Process-和线程-Thread"><a href="#进程-Process-和线程-Thread" class="headerlink" title="进程(Process)和线程(Thread)"></a>进程(Process)和线程(Thread)</h2><p><img src="../images/%E3%80%90Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E3%80%91%E5%85%A5%E9%97%A8%E5%9F%BA%E7%A1%80/image-20210804152551625.png" alt="image-20210804152551625"></p>]]></content>
+        <content type="html"><![CDATA[<p>[TOC]</p><hr><h2 id="1-多线程执行与普通方法执行的区别"><a href="#1-多线程执行与普通方法执行的区别" class="headerlink" title="1 多线程执行与普通方法执行的区别"></a>1 多线程执行与普通方法执行的区别</h2><p><img src="../images/%E3%80%90Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E3%80%91%E5%85%A5%E9%97%A8%E5%9F%BA%E7%A1%80/image-20210804152023280.png" alt="image-20210804152023280"></p><h2 id="2-进程-Process-和线程-Thread"><a href="#2-进程-Process-和线程-Thread" class="headerlink" title="2 进程(Process)和线程(Thread)"></a>2 进程(Process)和线程(Thread)</h2><p><img src="../images/%E3%80%90Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E3%80%91%E5%85%A5%E9%97%A8%E5%9F%BA%E7%A1%80/image-20210804152551625.png" alt="image-20210804152551625"></p><h2 id="3-主要问题"><a href="#3-主要问题" class="headerlink" title="3 主要问题"></a>3 主要问题</h2><ul><li>如何在Java中使用多线程</li><li>如何解决多线程带来的问题（线程安全，资源共享，死锁，线程通信等）</li></ul>]]></content>
       
       
       <categories>
@@ -404,7 +630,7 @@
     
     
     <entry>
-      <title>【数据预处理】：图像去均值</title>
+      <title>【数据预处理】图像去均值</title>
       <link href="2020/11/26/shu-ju-yu-chu-li-tu-xiang-qu-jun-zhi/"/>
       <url>2020/11/26/shu-ju-yu-chu-li-tu-xiang-qu-jun-zhi/</url>
       
@@ -451,9 +677,9 @@
       
         <tags>
             
-            <tag> 深度学习 </tag>
-            
             <tag> R-CNN </tag>
+            
+            <tag> 深度学习 </tag>
             
             <tag> 目标检测 </tag>
             
@@ -598,11 +824,11 @@
       
         <tags>
             
+            <tag> R-CNN </tag>
+            
             <tag> 深度学习 </tag>
             
             <tag> CNN </tag>
-            
-            <tag> R-CNN </tag>
             
         </tags>
       
